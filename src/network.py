@@ -69,6 +69,7 @@ net.addLink('s5', 'h5')
 net.addLink('s6', 'h6')
 net.addLink('s7', 'h7')
 
+net.setP4SourceAll("p4src/main.p4")
 
 # Assignment strategy
 net.l2()

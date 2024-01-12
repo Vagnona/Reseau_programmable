@@ -5,7 +5,7 @@
 
 
 
-## Modifications apportées
+## Modifications apportées sur la VM
 ```
 Le nouveau fichier node.py rajoute l’option --enable-swap à la cible, pour activer la fonctionnalité
 ~/p4-tools/p4-utils/p4utils/utils/
