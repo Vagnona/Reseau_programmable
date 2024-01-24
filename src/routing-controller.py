@@ -10,7 +10,7 @@ class RoutingController(object):
         self.controllers = {}
 
         if len(sys.argv) != 3:
-            print("Usage: python script.py [List1] [List2]")
+            print("Usage: python script.py [Node list] [Edge list]")
             sys.exit(1)
 
         self.node_list = eval(sys.argv[1])
@@ -22,8 +22,9 @@ class RoutingController(object):
         self.connect_to_switches()
         self.reset_states()
         self.set_table_defaults()
-        self.shortest_path(self.node_list, self.edge_list)
+        #self.shortest_path(self.node_list, self.edge_list)
 
+    #Reset le controller
     def reset_states(self):
         [controller.reset_state() for controller in self.controllers.values()]
 
@@ -32,16 +33,18 @@ class RoutingController(object):
             thrift_port = self.topo.get_thrift_port(p4switch)
             self.controllers[p4switch] = SimpleSwitchThriftAPI(thrift_port)
 
+    #
     def set_table_defaults(self):
         for controller in self.controllers.values():
             controller.table_set_default("ipv4_lpm", "drop", [])
             controller.table_set_default("ecmp_group_to_nhop", "drop", [])
 
+    #Calcule 
     def shortest_path(self):
         nl = self.node_list
         el = self.edge_list
 
-        G = nx.Graph()
+        
         
         
 
