@@ -4,7 +4,6 @@
 [Documentation p4utils](https://nsg-ethz.github.io/p4-utils/p4utils.html)
 
 
-
 ## Modifications apportées sur la VM
 ```
 Le nouveau fichier node.py rajoute l’option --enable-swap à la cible, pour activer la fonctionnalité

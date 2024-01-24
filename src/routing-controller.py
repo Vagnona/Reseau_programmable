@@ -1,18 +1,28 @@
 from p4utils.utils.helper import load_topo
 from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 
+import sys
+import networkx as nx
+
 class RoutingController(object):
-
     def __init__(self):
-
         self.topo = load_topo('topology.json')
         self.controllers = {}
+
+        if len(sys.argv) != 3:
+            print("Usage: python script.py [List1] [List2]")
+            sys.exit(1)
+
+        self.node_list = eval(sys.argv[1])
+        self.edge_list = eval(sys.argv[2])
+        
         self.init()
 
     def init(self):
         self.connect_to_switches()
         self.reset_states()
         self.set_table_defaults()
+        self.shortest_path(self.node_list, self.edge_list)
 
     def reset_states(self):
         [controller.reset_state() for controller in self.controllers.values()]
@@ -27,73 +37,53 @@ class RoutingController(object):
             controller.table_set_default("ipv4_lpm", "drop", [])
             controller.table_set_default("ecmp_group_to_nhop", "drop", [])
 
-    def route(self):
+    def shortest_path(self):
+        nl = self.node_list
+        el = self.edge_list
 
-        # Creer un dictionnaire par clef de chaque switch de la topo. 
+        G = nx.Graph()
+        
+        
+
+    def route(self):
         switch_ecmp_groups = {sw_name:{} for sw_name in self.topo.get_p4switches().keys()}
 
-        #Boucle sur les elements de la topologie.
         for sw_name, controller in self.controllers.items():
-
-            # Boucle sur la liste des switchs tout court.
             for sw_dst in self.topo.get_p4switches():
 
                 #if its ourselves we create direct connections
                 if sw_name == sw_dst:
-                    # Pour les hote directement connecté à sw_name
                     for host in self.topo.get_hosts_connected_to(sw_name):
-                        # Recuperation du port sx - host
                         sw_port = self.topo.node_to_node_port_num(sw_name, host)
-
-                        # L'ip
                         host_ip = self.topo.get_host_ip(host) + "/32"
-
-                        # L'addresse MAC
                         host_mac = self.topo.get_host_mac(host)
 
-                        #Ajout de la regle. 
+                        #add rule
                         print("table_add at {}:".format(sw_name))
                         self.controllers[sw_name].table_add("ipv4_lpm", "set_nhop", [str(host_ip)], [str(host_mac), str(sw_port)])
 
                 #check if there are directly connected hosts
-                # Maintenant sw_name et sw_dst sont differents. 
                 else:
-                    # Si la destination a un host directement co à lui sw_name - sw_dst - host
                     if self.topo.get_hosts_connected_to(sw_dst):
-
-                        # Recupere le plus cours chemin entre sw_name et sw_dst
                         paths = self.topo.get_shortest_paths_between_nodes(sw_name, sw_dst)
-
-                        # Boucle sur les host connecté à sw_dst.
                         for host in self.topo.get_hosts_connected_to(sw_dst):
 
-                            # Si la taille du chemin est 1 
                             if len(paths) == 1:
                                 next_hop = paths[0][1]
-
-                                # ip de l'host
                                 host_ip = self.topo.get_host_ip(host) + "/24"
-
-                                # port et MAC du next_hop
                                 sw_port = self.topo.node_to_node_port_num(sw_name, next_hop)
                                 dst_sw_mac = self.topo.node_to_node_mac(next_hop, sw_name)
 
-                                #Ajout de la regle.
+                                #add rule
                                 print("table_add at {}:".format(sw_name))
                                 self.controllers[sw_name].table_add("ipv4_lpm", "set_nhop", [str(host_ip)],
                                                                     [str(dst_sw_mac), str(sw_port)])
-                                
-                            # Si la taille du chemin est superieur à 1.
-                            elif len(paths) > 1:
-                                # Prend le prochain saut de tout les chamins possible.
-                                next_hops = [x[1] for x in paths]
 
-                                # Tableau des mac et port de tous les prochains saut.
+                            elif len(paths) > 1:
+                                next_hops = [x[1] for x in paths]
                                 dst_macs_ports = [(self.topo.node_to_node_mac(next_hop, sw_name),
                                                    self.topo.node_to_node_port_num(sw_name, next_hop))
                                                   for next_hop in next_hops]
-                                
-                                # Ip de l'hote. 
                                 host_ip = self.topo.get_host_ip(host) + "/24"
 
                                 #check if the ecmp group already exists. The ecmp group is defined by the number of next
@@ -111,7 +101,7 @@ class RoutingController(object):
 
                                     #add group
                                     for i, (mac, port) in enumerate(dst_macs_ports):
-                                        print("table_add at {}:".format(sw_name)) 
+                                        print("table_add at {}:".format(sw_name))
                                         self.controllers[sw_name].table_add("ecmp_group_to_nhop", "set_nhop",
                                                                             [str(new_ecmp_group_id), str(i)],
                                                                             [str(mac), str(port)])

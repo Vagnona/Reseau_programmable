@@ -1,643 +1,230 @@
 Warning: you requested the nanomsg event logger, but bmv2 was compiled without -DBMELOG, and the event logger cannot be activated
 Calling target program-options parser
-[17:52:09.786] [bmv2] [D] [thread 2735] Set default default entry for table 'MyIngress.ipv4_lpm': MyIngress.drop - 
-[17:52:09.811] [bmv2] [D] [thread 2735] Set default default entry for table 'MyIngress.ecmp_group_to_nhop': NoAction - 
+[17:35:29.926] [bmv2] [D] [thread 13697] Set default default entry for table 'tbl_repeater_without_table50': repeater_without_table50 - 
+[17:35:29.956] [bmv2] [D] [thread 13697] Set default default entry for table 'tbl_repeater_without_table55': repeater_without_table55 - 
 Adding interface s6-eth1 as port 1
-[17:52:09.908] [bmv2] [D] [thread 2735] Adding interface s6-eth1 as port 1
+[17:35:30.021] [bmv2] [D] [thread 13697] Adding interface s6-eth1 as port 1
 Adding interface s6-eth2 as port 2
-[17:52:10.010] [bmv2] [D] [thread 2735] Adding interface s6-eth2 as port 2
+[17:35:30.115] [bmv2] [D] [thread 13697] Adding interface s6-eth2 as port 2
 Adding interface s6-eth3 as port 3
-[17:52:10.080] [bmv2] [D] [thread 2735] Adding interface s6-eth3 as port 3
+[17:35:30.164] [bmv2] [D] [thread 13697] Adding interface s6-eth3 as port 3
 Adding interface s6-eth4 as port 4
-[17:52:10.139] [bmv2] [D] [thread 2735] Adding interface s6-eth4 as port 4
+[17:35:30.196] [bmv2] [D] [thread 13697] Adding interface s6-eth4 as port 4
 Adding interface s6-eth5 as port 5
-[17:52:10.195] [bmv2] [D] [thread 2735] Adding interface s6-eth5 as port 5
+[17:35:30.235] [bmv2] [D] [thread 13697] Adding interface s6-eth5 as port 5
 Adding interface s6-eth6 as port 6
-[17:52:10.227] [bmv2] [D] [thread 2735] Adding interface s6-eth6 as port 6
+[17:35:30.264] [bmv2] [D] [thread 13697] Adding interface s6-eth6 as port 6
 Adding interface s6-eth7 as port 7
-[17:52:10.271] [bmv2] [D] [thread 2735] Adding interface s6-eth7 as port 7
+[17:35:30.303] [bmv2] [D] [thread 13697] Adding interface s6-eth7 as port 7
 Adding interface s6-eth8 as port 8
-[17:52:10.335] [bmv2] [D] [thread 2735] Adding interface s6-eth8 as port 8
-[17:52:10.371] [bmv2] [I] [thread 2735] Starting Thrift server on port 9096
-[17:52:10.444] [bmv2] [I] [thread 2735] Thrift server was started
-[17:52:11.459] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Processing packet received on port 1
-[17:52:11.460] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Parser 'parser': start
-[17:52:11.461] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:11.461] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Extracting header 'ethernet'
-[17:52:11.488] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:11.489] [bmv2] [T] [thread 2754] [0.0] [cxt 0] Bytes parsed: 14
-[17:52:11.506] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Parser 'parser': end
-[17:52:11.508] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Pipeline 'ingress': start
-[17:52:11.547] [bmv2] [T] [thread 2754] [0.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:11.548] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Pipeline 'ingress': end
-[17:52:11.549] [bmv2] [D] [thread 2754] [0.0] [cxt 0] Egress port is 0
-[17:52:11.598] [bmv2] [D] [thread 2756] [0.0] [cxt 0] Pipeline 'egress': start
-[17:52:11.599] [bmv2] [D] [thread 2756] [0.0] [cxt 0] Pipeline 'egress': end
-[17:52:11.599] [bmv2] [D] [thread 2756] [0.0] [cxt 0] Deparser 'deparser': start
-[17:52:11.600] [bmv2] [T] [thread 2756] [0.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:11.601] [bmv2] [D] [thread 2756] [0.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:11.618] [bmv2] [D] [thread 2756] [0.0] [cxt 0] Deparser 'deparser': end
-[17:52:11.620] [bmv2] [D] [thread 2760] [0.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:15.427] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Processing packet received on port 1
-[17:52:15.427] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Parser 'parser': start
-[17:52:15.427] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:15.427] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Extracting header 'ethernet'
-[17:52:15.428] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:15.428] [bmv2] [T] [thread 2754] [1.0] [cxt 0] Bytes parsed: 14
-[17:52:15.428] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Parser 'parser': end
-[17:52:15.428] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Pipeline 'ingress': start
-[17:52:15.428] [bmv2] [T] [thread 2754] [1.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:15.428] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Pipeline 'ingress': end
-[17:52:15.429] [bmv2] [D] [thread 2754] [1.0] [cxt 0] Egress port is 0
-[17:52:15.478] [bmv2] [D] [thread 2756] [1.0] [cxt 0] Pipeline 'egress': start
-[17:52:15.479] [bmv2] [D] [thread 2756] [1.0] [cxt 0] Pipeline 'egress': end
-[17:52:15.479] [bmv2] [D] [thread 2756] [1.0] [cxt 0] Deparser 'deparser': start
-[17:52:15.480] [bmv2] [T] [thread 2756] [1.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:15.480] [bmv2] [D] [thread 2756] [1.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:15.480] [bmv2] [D] [thread 2756] [1.0] [cxt 0] Deparser 'deparser': end
-[17:52:15.498] [bmv2] [D] [thread 2760] [1.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:15.499] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Processing packet received on port 8
-[17:52:15.499] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Parser 'parser': start
-[17:52:15.499] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:15.500] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Extracting header 'ethernet'
-[17:52:15.500] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:15.500] [bmv2] [T] [thread 2754] [2.0] [cxt 0] Bytes parsed: 14
-[17:52:15.501] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Parser 'parser': end
-[17:52:15.501] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Pipeline 'ingress': start
-[17:52:15.501] [bmv2] [T] [thread 2754] [2.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:15.501] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Pipeline 'ingress': end
-[17:52:15.502] [bmv2] [D] [thread 2754] [2.0] [cxt 0] Egress port is 0
-[17:52:15.533] [bmv2] [D] [thread 2756] [2.0] [cxt 0] Pipeline 'egress': start
-[17:52:15.543] [bmv2] [D] [thread 2756] [2.0] [cxt 0] Pipeline 'egress': end
-[17:52:15.574] [bmv2] [D] [thread 2756] [2.0] [cxt 0] Deparser 'deparser': start
-[17:52:15.575] [bmv2] [T] [thread 2756] [2.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:15.575] [bmv2] [D] [thread 2756] [2.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:15.576] [bmv2] [D] [thread 2756] [2.0] [cxt 0] Deparser 'deparser': end
-[17:52:15.585] [bmv2] [D] [thread 2760] [2.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:17.463] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Processing packet received on port 2
-[17:52:17.464] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Parser 'parser': start
-[17:52:17.464] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:17.464] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Extracting header 'ethernet'
-[17:52:17.464] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:17.464] [bmv2] [T] [thread 2754] [3.0] [cxt 0] Bytes parsed: 14
-[17:52:17.465] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Parser 'parser': end
-[17:52:17.465] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Pipeline 'ingress': start
-[17:52:17.465] [bmv2] [T] [thread 2754] [3.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:17.465] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Pipeline 'ingress': end
-[17:52:17.465] [bmv2] [D] [thread 2754] [3.0] [cxt 0] Egress port is 0
-[17:52:17.483] [bmv2] [D] [thread 2756] [3.0] [cxt 0] Pipeline 'egress': start
-[17:52:17.483] [bmv2] [D] [thread 2756] [3.0] [cxt 0] Pipeline 'egress': end
-[17:52:17.483] [bmv2] [D] [thread 2756] [3.0] [cxt 0] Deparser 'deparser': start
-[17:52:17.483] [bmv2] [T] [thread 2756] [3.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:17.483] [bmv2] [D] [thread 2756] [3.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:17.484] [bmv2] [D] [thread 2756] [3.0] [cxt 0] Deparser 'deparser': end
-[17:52:17.498] [bmv2] [D] [thread 2760] [3.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:19.528] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Processing packet received on port 3
-[17:52:19.529] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Parser 'parser': start
-[17:52:19.529] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:19.529] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Extracting header 'ethernet'
-[17:52:19.529] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:19.530] [bmv2] [T] [thread 2754] [4.0] [cxt 0] Bytes parsed: 14
-[17:52:19.553] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Parser 'parser': end
-[17:52:19.553] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Pipeline 'ingress': start
-[17:52:19.572] [bmv2] [T] [thread 2754] [4.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:19.572] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Pipeline 'ingress': end
-[17:52:19.572] [bmv2] [D] [thread 2754] [4.0] [cxt 0] Egress port is 0
-[17:52:19.587] [bmv2] [D] [thread 2756] [4.0] [cxt 0] Pipeline 'egress': start
-[17:52:19.587] [bmv2] [D] [thread 2756] [4.0] [cxt 0] Pipeline 'egress': end
-[17:52:19.587] [bmv2] [D] [thread 2756] [4.0] [cxt 0] Deparser 'deparser': start
-[17:52:19.587] [bmv2] [T] [thread 2756] [4.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:19.587] [bmv2] [D] [thread 2756] [4.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:19.588] [bmv2] [D] [thread 2756] [4.0] [cxt 0] Deparser 'deparser': end
-[17:52:19.606] [bmv2] [D] [thread 2760] [4.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:25.655] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Processing packet received on port 3
-[17:52:25.656] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Parser 'parser': start
-[17:52:25.656] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:25.656] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Extracting header 'ethernet'
-[17:52:25.656] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:25.656] [bmv2] [T] [thread 2754] [5.0] [cxt 0] Bytes parsed: 14
-[17:52:25.657] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Parser 'parser': end
-[17:52:25.657] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Pipeline 'ingress': start
-[17:52:25.657] [bmv2] [T] [thread 2754] [5.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:25.657] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Pipeline 'ingress': end
-[17:52:25.657] [bmv2] [D] [thread 2754] [5.0] [cxt 0] Egress port is 0
-[17:52:25.666] [bmv2] [D] [thread 2756] [5.0] [cxt 0] Pipeline 'egress': start
-[17:52:25.667] [bmv2] [D] [thread 2756] [5.0] [cxt 0] Pipeline 'egress': end
-[17:52:25.667] [bmv2] [D] [thread 2756] [5.0] [cxt 0] Deparser 'deparser': start
-[17:52:25.667] [bmv2] [T] [thread 2756] [5.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:25.667] [bmv2] [D] [thread 2756] [5.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:25.667] [bmv2] [D] [thread 2756] [5.0] [cxt 0] Deparser 'deparser': end
-[17:52:25.668] [bmv2] [D] [thread 2760] [5.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:27.701] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Processing packet received on port 5
-[17:52:27.701] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Parser 'parser': start
-[17:52:27.702] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:27.702] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Extracting header 'ethernet'
-[17:52:27.713] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:27.714] [bmv2] [T] [thread 2754] [6.0] [cxt 0] Bytes parsed: 14
-[17:52:27.716] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Parser 'parser': end
-[17:52:27.716] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Pipeline 'ingress': start
-[17:52:27.717] [bmv2] [T] [thread 2754] [6.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:27.717] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Pipeline 'ingress': end
-[17:52:27.717] [bmv2] [D] [thread 2754] [6.0] [cxt 0] Egress port is 0
-[17:52:27.729] [bmv2] [D] [thread 2756] [6.0] [cxt 0] Pipeline 'egress': start
-[17:52:27.730] [bmv2] [D] [thread 2756] [6.0] [cxt 0] Pipeline 'egress': end
-[17:52:27.737] [bmv2] [D] [thread 2756] [6.0] [cxt 0] Deparser 'deparser': start
-[17:52:27.737] [bmv2] [T] [thread 2756] [6.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:27.737] [bmv2] [D] [thread 2756] [6.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:27.737] [bmv2] [D] [thread 2756] [6.0] [cxt 0] Deparser 'deparser': end
-[17:52:27.738] [bmv2] [D] [thread 2760] [6.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:29.748] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Processing packet received on port 4
-[17:52:29.749] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Parser 'parser': start
-[17:52:29.749] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:29.755] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Extracting header 'ethernet'
-[17:52:29.755] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:29.755] [bmv2] [T] [thread 2754] [7.0] [cxt 0] Bytes parsed: 14
-[17:52:29.756] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Parser 'parser': end
-[17:52:29.756] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Pipeline 'ingress': start
-[17:52:29.756] [bmv2] [T] [thread 2754] [7.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:29.756] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Pipeline 'ingress': end
-[17:52:29.756] [bmv2] [D] [thread 2754] [7.0] [cxt 0] Egress port is 0
-[17:52:29.759] [bmv2] [D] [thread 2756] [7.0] [cxt 0] Pipeline 'egress': start
-[17:52:29.760] [bmv2] [D] [thread 2756] [7.0] [cxt 0] Pipeline 'egress': end
-[17:52:29.760] [bmv2] [D] [thread 2756] [7.0] [cxt 0] Deparser 'deparser': start
-[17:52:29.760] [bmv2] [T] [thread 2756] [7.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:29.760] [bmv2] [D] [thread 2756] [7.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:29.760] [bmv2] [D] [thread 2756] [7.0] [cxt 0] Deparser 'deparser': end
-[17:52:29.774] [bmv2] [D] [thread 2760] [7.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:29.775] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Processing packet received on port 4
-[17:52:29.775] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Parser 'parser': start
-[17:52:29.775] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:29.775] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Extracting header 'ethernet'
-[17:52:29.776] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:29.776] [bmv2] [T] [thread 2754] [8.0] [cxt 0] Bytes parsed: 14
-[17:52:29.776] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Parser 'parser': end
-[17:52:29.776] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Pipeline 'ingress': start
-[17:52:29.776] [bmv2] [T] [thread 2754] [8.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:29.777] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Pipeline 'ingress': end
-[17:52:29.777] [bmv2] [D] [thread 2754] [8.0] [cxt 0] Egress port is 0
-[17:52:29.784] [bmv2] [D] [thread 2756] [8.0] [cxt 0] Pipeline 'egress': start
-[17:52:29.785] [bmv2] [D] [thread 2756] [8.0] [cxt 0] Pipeline 'egress': end
-[17:52:29.785] [bmv2] [D] [thread 2756] [8.0] [cxt 0] Deparser 'deparser': start
-[17:52:29.785] [bmv2] [T] [thread 2756] [8.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:29.785] [bmv2] [D] [thread 2756] [8.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:29.785] [bmv2] [D] [thread 2756] [8.0] [cxt 0] Deparser 'deparser': end
-[17:52:29.798] [bmv2] [D] [thread 2760] [8.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:31.800] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Processing packet received on port 6
-[17:52:31.801] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Parser 'parser': start
-[17:52:31.801] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:31.804] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Extracting header 'ethernet'
-[17:52:31.805] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:31.805] [bmv2] [T] [thread 2754] [9.0] [cxt 0] Bytes parsed: 14
-[17:52:31.805] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Parser 'parser': end
-[17:52:31.805] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Pipeline 'ingress': start
-[17:52:31.810] [bmv2] [T] [thread 2754] [9.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:31.810] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Pipeline 'ingress': end
-[17:52:31.811] [bmv2] [D] [thread 2754] [9.0] [cxt 0] Egress port is 0
-[17:52:31.811] [bmv2] [D] [thread 2756] [9.0] [cxt 0] Pipeline 'egress': start
-[17:52:31.812] [bmv2] [D] [thread 2756] [9.0] [cxt 0] Pipeline 'egress': end
-[17:52:31.812] [bmv2] [D] [thread 2756] [9.0] [cxt 0] Deparser 'deparser': start
-[17:52:31.812] [bmv2] [T] [thread 2756] [9.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:31.812] [bmv2] [D] [thread 2756] [9.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:31.812] [bmv2] [D] [thread 2756] [9.0] [cxt 0] Deparser 'deparser': end
-[17:52:31.821] [bmv2] [D] [thread 2760] [9.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:52:35.991] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Processing packet received on port 8
-[17:52:36.072] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Parser 'parser': start
-[17:52:36.076] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Parser 'parser' entering state 'start'
-[17:52:36.077] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Extracting header 'ethernet'
-[17:52:36.131] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Parser state 'start': key is 86dd
-[17:52:36.133] [bmv2] [T] [thread 2754] [10.0] [cxt 0] Bytes parsed: 14
-[17:52:36.133] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Parser 'parser': end
-[17:52:36.153] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Pipeline 'ingress': start
-[17:52:36.161] [bmv2] [T] [thread 2754] [10.0] [cxt 0] /home/p4/git/src/p4src/main.p4(83) Condition "hdr.ipv4.isValid()" (node_2) is false
-[17:52:36.162] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Pipeline 'ingress': end
-[17:52:36.198] [bmv2] [D] [thread 2754] [10.0] [cxt 0] Egress port is 0
-[17:52:36.240] [bmv2] [D] [thread 2756] [10.0] [cxt 0] Pipeline 'egress': start
-[17:52:36.241] [bmv2] [D] [thread 2756] [10.0] [cxt 0] Pipeline 'egress': end
-[17:52:36.241] [bmv2] [D] [thread 2756] [10.0] [cxt 0] Deparser 'deparser': start
-[17:52:36.241] [bmv2] [T] [thread 2756] [10.0] [cxt 0] Skipping checksum 'cksum' update because condition not met
-[17:52:36.251] [bmv2] [D] [thread 2756] [10.0] [cxt 0] Deparsing header 'ethernet'
-[17:52:36.252] [bmv2] [D] [thread 2756] [10.0] [cxt 0] Deparser 'deparser': end
-[17:52:36.279] [bmv2] [D] [thread 2760] [10.0] [cxt 0] Transmitting packet of size 70 out of port 0
-[17:56:07.706] [bmv2] [T] [thread 4695] bm_get_config
-[17:56:07.722] [bmv2] [T] [thread 4695] bm_mt_get_entries
-[17:56:07.730] [bmv2] [T] [thread 4695] bm_mt_get_entries
-[17:56:07.973] [bmv2] [T] [thread 4695] bm_reset_state
-[17:56:07.988] [bmv2] [D] [thread 4695] Resetting simple_switch target-specific state
-[17:56:07.991] [bmv2] [D] [thread 4695] resetting PRE state
-[17:56:08.181] [bmv2] [T] [thread 4695] bm_set_default_action
-[17:56:08.190] [bmv2] [D] [thread 4695] Set default entry for table 'MyIngress.ipv4_lpm': MyIngress.drop - 
-[17:56:08.198] [bmv2] [T] [thread 4695] bm_set_default_action
-[17:56:08.198] [bmv2] [D] [thread 4695] Set default entry for table 'MyIngress.ecmp_group_to_nhop': MyIngress.drop - 
-[17:56:10.236] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.253] [bmv2] [D] [thread 4695] Entry 0 added to table 'MyIngress.ipv4_lpm'
-[17:56:10.265] [bmv2] [D] [thread 4695] Dumping entry 0
-Match key:
-* hdr.ipv4.dstAddr    : LPM       0a000000/24
-Action entry: MyIngress.set_nhop - 161940fd4cde,1,
-
-[17:56:10.285] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.286] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-[17:56:10.327] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.328] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-[17:56:10.351] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.352] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-[17:56:10.385] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.386] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-[17:56:10.411] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.413] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-[17:56:10.434] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.435] [bmv2] [D] [thread 4695] Entry 1 added to table 'MyIngress.ipv4_lpm'
-[17:56:10.436] [bmv2] [D] [thread 4695] Dumping entry 1
-Match key:
-* hdr.ipv4.dstAddr    : LPM       0a000006/32
-Action entry: MyIngress.set_nhop - a000006,7,
-
-[17:56:10.463] [bmv2] [T] [thread 4695] bm_table_add_entry
-[17:56:10.465] [bmv2] [E] [thread 4695] Error when trying to add entry to table 'MyIngress.ipv4_lpm': DUPLICATE_ENTRY
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
-open: No such file or directory
+[17:35:30.343] [bmv2] [D] [thread 13697] Adding interface s6-eth8 as port 8
+[17:35:30.384] [bmv2] [I] [thread 13697] Starting Thrift server on port 9096
+[17:35:30.449] [bmv2] [I] [thread 13697] Thrift server was started
+[17:35:30.669] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Processing packet received on port 5
+[17:35:30.686] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Parser 'parser': start
+[17:35:30.687] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:30.688] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:30.689] [bmv2] [T] [thread 13713] [0.0] [cxt 0] Bytes parsed: 0
+[17:35:30.689] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Parser 'parser': end
+[17:35:30.702] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Pipeline 'ingress': start
+[17:35:30.759] [bmv2] [T] [thread 13713] [0.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:30.759] [bmv2] [T] [thread 13713] [0.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:30.760] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Pipeline 'ingress': end
+[17:35:30.760] [bmv2] [D] [thread 13713] [0.0] [cxt 0] Egress port is 0
+[17:35:30.802] [bmv2] [D] [thread 13715] [0.0] [cxt 0] Pipeline 'egress': start
+[17:35:30.802] [bmv2] [D] [thread 13715] [0.0] [cxt 0] Pipeline 'egress': end
+[17:35:30.803] [bmv2] [D] [thread 13715] [0.0] [cxt 0] Deparser 'deparser': start
+[17:35:30.803] [bmv2] [D] [thread 13715] [0.0] [cxt 0] Deparser 'deparser': end
+[17:35:30.804] [bmv2] [D] [thread 13719] [0.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:31.327] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Processing packet received on port 6
+[17:35:31.327] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Parser 'parser': start
+[17:35:31.327] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:31.327] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:31.327] [bmv2] [T] [thread 13713] [1.0] [cxt 0] Bytes parsed: 0
+[17:35:31.328] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Parser 'parser': end
+[17:35:31.328] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Pipeline 'ingress': start
+[17:35:31.328] [bmv2] [T] [thread 13713] [1.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:31.328] [bmv2] [T] [thread 13713] [1.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:31.328] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Pipeline 'ingress': end
+[17:35:31.328] [bmv2] [D] [thread 13713] [1.0] [cxt 0] Egress port is 0
+[17:35:31.329] [bmv2] [D] [thread 13715] [1.0] [cxt 0] Pipeline 'egress': start
+[17:35:31.329] [bmv2] [D] [thread 13715] [1.0] [cxt 0] Pipeline 'egress': end
+[17:35:31.333] [bmv2] [D] [thread 13715] [1.0] [cxt 0] Deparser 'deparser': start
+[17:35:31.334] [bmv2] [D] [thread 13715] [1.0] [cxt 0] Deparser 'deparser': end
+[17:35:31.334] [bmv2] [D] [thread 13719] [1.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:33.118] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Processing packet received on port 5
+[17:35:33.119] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Parser 'parser': start
+[17:35:33.119] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:33.119] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:33.119] [bmv2] [T] [thread 13713] [2.0] [cxt 0] Bytes parsed: 0
+[17:35:33.119] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Parser 'parser': end
+[17:35:33.119] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Pipeline 'ingress': start
+[17:35:33.120] [bmv2] [T] [thread 13713] [2.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:33.120] [bmv2] [T] [thread 13713] [2.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:33.120] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Pipeline 'ingress': end
+[17:35:33.120] [bmv2] [D] [thread 13713] [2.0] [cxt 0] Egress port is 0
+[17:35:33.121] [bmv2] [D] [thread 13715] [2.0] [cxt 0] Pipeline 'egress': start
+[17:35:33.121] [bmv2] [D] [thread 13715] [2.0] [cxt 0] Pipeline 'egress': end
+[17:35:33.121] [bmv2] [D] [thread 13715] [2.0] [cxt 0] Deparser 'deparser': start
+[17:35:33.121] [bmv2] [D] [thread 13715] [2.0] [cxt 0] Deparser 'deparser': end
+[17:35:33.126] [bmv2] [D] [thread 13719] [2.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:34.396] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Processing packet received on port 7
+[17:35:34.397] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Parser 'parser': start
+[17:35:34.397] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:34.397] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:34.397] [bmv2] [T] [thread 13713] [3.0] [cxt 0] Bytes parsed: 0
+[17:35:34.397] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Parser 'parser': end
+[17:35:34.406] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Pipeline 'ingress': start
+[17:35:34.406] [bmv2] [T] [thread 13713] [3.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:34.407] [bmv2] [T] [thread 13713] [3.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:34.407] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Pipeline 'ingress': end
+[17:35:34.407] [bmv2] [D] [thread 13713] [3.0] [cxt 0] Egress port is 0
+[17:35:34.410] [bmv2] [D] [thread 13715] [3.0] [cxt 0] Pipeline 'egress': start
+[17:35:34.411] [bmv2] [D] [thread 13715] [3.0] [cxt 0] Pipeline 'egress': end
+[17:35:34.411] [bmv2] [D] [thread 13715] [3.0] [cxt 0] Deparser 'deparser': start
+[17:35:34.411] [bmv2] [D] [thread 13715] [3.0] [cxt 0] Deparser 'deparser': end
+[17:35:34.426] [bmv2] [D] [thread 13719] [3.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:37.211] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Processing packet received on port 6
+[17:35:37.211] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Parser 'parser': start
+[17:35:37.211] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:37.211] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:37.211] [bmv2] [T] [thread 13713] [4.0] [cxt 0] Bytes parsed: 0
+[17:35:37.212] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Parser 'parser': end
+[17:35:37.212] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Pipeline 'ingress': start
+[17:35:37.212] [bmv2] [T] [thread 13713] [4.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:37.212] [bmv2] [T] [thread 13713] [4.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:37.212] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Pipeline 'ingress': end
+[17:35:37.213] [bmv2] [D] [thread 13713] [4.0] [cxt 0] Egress port is 0
+[17:35:37.235] [bmv2] [D] [thread 13715] [4.0] [cxt 0] Pipeline 'egress': start
+[17:35:37.236] [bmv2] [D] [thread 13715] [4.0] [cxt 0] Pipeline 'egress': end
+[17:35:37.236] [bmv2] [D] [thread 13715] [4.0] [cxt 0] Deparser 'deparser': start
+[17:35:37.236] [bmv2] [D] [thread 13715] [4.0] [cxt 0] Deparser 'deparser': end
+[17:35:37.236] [bmv2] [D] [thread 13719] [4.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:39.263] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Processing packet received on port 8
+[17:35:39.263] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Parser 'parser': start
+[17:35:39.264] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:39.264] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:39.264] [bmv2] [T] [thread 13713] [5.0] [cxt 0] Bytes parsed: 0
+[17:35:39.264] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Parser 'parser': end
+[17:35:39.265] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Pipeline 'ingress': start
+[17:35:39.265] [bmv2] [T] [thread 13713] [5.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:39.265] [bmv2] [T] [thread 13713] [5.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:39.265] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Pipeline 'ingress': end
+[17:35:39.282] [bmv2] [D] [thread 13713] [5.0] [cxt 0] Egress port is 0
+[17:35:39.285] [bmv2] [D] [thread 13715] [5.0] [cxt 0] Pipeline 'egress': start
+[17:35:39.285] [bmv2] [D] [thread 13715] [5.0] [cxt 0] Pipeline 'egress': end
+[17:35:39.287] [bmv2] [D] [thread 13715] [5.0] [cxt 0] Deparser 'deparser': start
+[17:35:39.288] [bmv2] [D] [thread 13715] [5.0] [cxt 0] Deparser 'deparser': end
+[17:35:39.288] [bmv2] [D] [thread 13719] [5.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:35:41.307] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Processing packet received on port 8
+[17:35:41.307] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Parser 'parser': start
+[17:35:41.307] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:35:41.307] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:35:41.307] [bmv2] [T] [thread 13713] [6.0] [cxt 0] Bytes parsed: 0
+[17:35:41.307] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Parser 'parser': end
+[17:35:41.308] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Pipeline 'ingress': start
+[17:35:41.308] [bmv2] [T] [thread 13713] [6.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:35:41.308] [bmv2] [T] [thread 13713] [6.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:35:41.308] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Pipeline 'ingress': end
+[17:35:41.308] [bmv2] [D] [thread 13713] [6.0] [cxt 0] Egress port is 0
+[17:35:41.322] [bmv2] [D] [thread 13715] [6.0] [cxt 0] Pipeline 'egress': start
+[17:35:41.322] [bmv2] [D] [thread 13715] [6.0] [cxt 0] Pipeline 'egress': end
+[17:35:41.323] [bmv2] [D] [thread 13715] [6.0] [cxt 0] Deparser 'deparser': start
+[17:35:41.323] [bmv2] [D] [thread 13715] [6.0] [cxt 0] Deparser 'deparser': end
+[17:35:41.330] [bmv2] [D] [thread 13719] [6.0] [cxt 0] Transmitting packet of size 70 out of port 0
+[17:43:34.239] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Processing packet received on port 7
+[17:43:34.247] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Parser 'parser': start
+[17:43:34.248] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:43:34.249] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:43:34.254] [bmv2] [T] [thread 13713] [7.0] [cxt 0] Bytes parsed: 0
+[17:43:34.255] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Parser 'parser': end
+[17:43:34.256] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Pipeline 'ingress': start
+[17:43:34.266] [bmv2] [T] [thread 13713] [7.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:43:34.270] [bmv2] [T] [thread 13713] [7.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:43:34.270] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Pipeline 'ingress': end
+[17:43:34.271] [bmv2] [D] [thread 13713] [7.0] [cxt 0] Egress port is 0
+[17:43:34.279] [bmv2] [D] [thread 13715] [7.0] [cxt 0] Pipeline 'egress': start
+[17:43:34.282] [bmv2] [D] [thread 13715] [7.0] [cxt 0] Pipeline 'egress': end
+[17:43:34.282] [bmv2] [D] [thread 13715] [7.0] [cxt 0] Deparser 'deparser': start
+[17:43:34.283] [bmv2] [D] [thread 13715] [7.0] [cxt 0] Deparser 'deparser': end
+[17:43:34.284] [bmv2] [D] [thread 13719] [7.0] [cxt 0] Transmitting packet of size 98 out of port 0
+[17:43:44.275] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Processing packet received on port 7
+[17:43:44.276] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Parser 'parser': start
+[17:43:44.276] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:43:44.276] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:43:44.276] [bmv2] [T] [thread 13713] [8.0] [cxt 0] Bytes parsed: 0
+[17:43:44.276] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Parser 'parser': end
+[17:43:44.276] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Pipeline 'ingress': start
+[17:43:44.277] [bmv2] [T] [thread 13713] [8.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:43:44.277] [bmv2] [T] [thread 13713] [8.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:43:44.277] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Pipeline 'ingress': end
+[17:43:44.277] [bmv2] [D] [thread 13713] [8.0] [cxt 0] Egress port is 0
+[17:43:44.279] [bmv2] [D] [thread 13715] [8.0] [cxt 0] Pipeline 'egress': start
+[17:43:44.280] [bmv2] [D] [thread 13715] [8.0] [cxt 0] Pipeline 'egress': end
+[17:43:44.281] [bmv2] [D] [thread 13715] [8.0] [cxt 0] Deparser 'deparser': start
+[17:43:44.282] [bmv2] [D] [thread 13715] [8.0] [cxt 0] Deparser 'deparser': end
+[17:43:44.283] [bmv2] [D] [thread 13719] [8.0] [cxt 0] Transmitting packet of size 98 out of port 0
+[17:43:54.345] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Processing packet received on port 7
+[17:43:54.345] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Parser 'parser': start
+[17:43:54.346] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:43:54.347] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:43:54.347] [bmv2] [T] [thread 13713] [9.0] [cxt 0] Bytes parsed: 0
+[17:43:54.347] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Parser 'parser': end
+[17:43:54.347] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Pipeline 'ingress': start
+[17:43:54.347] [bmv2] [T] [thread 13713] [9.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:43:54.347] [bmv2] [T] [thread 13713] [9.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:43:54.347] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Pipeline 'ingress': end
+[17:43:54.348] [bmv2] [D] [thread 13713] [9.0] [cxt 0] Egress port is 0
+[17:43:54.348] [bmv2] [D] [thread 13715] [9.0] [cxt 0] Pipeline 'egress': start
+[17:43:54.348] [bmv2] [D] [thread 13715] [9.0] [cxt 0] Pipeline 'egress': end
+[17:43:54.349] [bmv2] [D] [thread 13715] [9.0] [cxt 0] Deparser 'deparser': start
+[17:43:54.349] [bmv2] [D] [thread 13715] [9.0] [cxt 0] Deparser 'deparser': end
+[17:43:54.349] [bmv2] [D] [thread 13719] [9.0] [cxt 0] Transmitting packet of size 98 out of port 0
+[17:44:04.425] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Processing packet received on port 7
+[17:44:04.432] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Parser 'parser': start
+[17:44:04.433] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:44:04.433] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:44:04.433] [bmv2] [T] [thread 13713] [10.0] [cxt 0] Bytes parsed: 0
+[17:44:04.433] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Parser 'parser': end
+[17:44:04.433] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Pipeline 'ingress': start
+[17:44:04.434] [bmv2] [T] [thread 13713] [10.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:44:04.434] [bmv2] [T] [thread 13713] [10.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:44:04.434] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Pipeline 'ingress': end
+[17:44:04.434] [bmv2] [D] [thread 13713] [10.0] [cxt 0] Egress port is 0
+[17:44:04.435] [bmv2] [D] [thread 13715] [10.0] [cxt 0] Pipeline 'egress': start
+[17:44:04.435] [bmv2] [D] [thread 13715] [10.0] [cxt 0] Pipeline 'egress': end
+[17:44:04.435] [bmv2] [D] [thread 13715] [10.0] [cxt 0] Deparser 'deparser': start
+[17:44:04.436] [bmv2] [D] [thread 13715] [10.0] [cxt 0] Deparser 'deparser': end
+[17:44:04.442] [bmv2] [D] [thread 13719] [10.0] [cxt 0] Transmitting packet of size 98 out of port 0
+[17:44:14.602] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Processing packet received on port 7
+[17:44:14.608] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Parser 'parser': start
+[17:44:14.610] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:44:14.612] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:44:14.613] [bmv2] [T] [thread 13713] [11.0] [cxt 0] Bytes parsed: 0
+[17:44:14.617] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Parser 'parser': end
+[17:44:14.620] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Pipeline 'ingress': start
+[17:44:14.624] [bmv2] [T] [thread 13713] [11.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:44:14.625] [bmv2] [T] [thread 13713] [11.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:44:14.626] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Pipeline 'ingress': end
+[17:44:14.628] [bmv2] [D] [thread 13713] [11.0] [cxt 0] Egress port is 0
+[17:44:14.632] [bmv2] [D] [thread 13715] [11.0] [cxt 0] Pipeline 'egress': start
+[17:44:14.633] [bmv2] [D] [thread 13715] [11.0] [cxt 0] Pipeline 'egress': end
+[17:44:14.634] [bmv2] [D] [thread 13715] [11.0] [cxt 0] Deparser 'deparser': start
+[17:44:14.635] [bmv2] [D] [thread 13715] [11.0] [cxt 0] Deparser 'deparser': end
+[17:44:14.637] [bmv2] [D] [thread 13719] [11.0] [cxt 0] Transmitting packet of size 98 out of port 0
+[17:44:24.646] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Processing packet received on port 7
+[17:44:24.646] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Parser 'parser': start
+[17:44:24.647] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Parser 'parser' entering state 'start'
+[17:44:24.647] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Parser state 'start' has no switch, going to default next state
+[17:44:24.647] [bmv2] [T] [thread 13713] [12.0] [cxt 0] Bytes parsed: 0
+[17:44:24.647] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Parser 'parser': end
+[17:44:24.647] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Pipeline 'ingress': start
+[17:44:24.647] [bmv2] [T] [thread 13713] [12.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(49) Condition "standard_metadata.ingress_port == 1" (node_2) is false
+[17:44:24.649] [bmv2] [T] [thread 13713] [12.0] [cxt 0] /home/p4/git/src/repeater_without_table.p4(54) Condition "standard_metadata.ingress_port == 2" (node_4) is false
+[17:44:24.656] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Pipeline 'ingress': end
+[17:44:24.657] [bmv2] [D] [thread 13713] [12.0] [cxt 0] Egress port is 0
+[17:44:24.658] [bmv2] [D] [thread 13715] [12.0] [cxt 0] Pipeline 'egress': start
+[17:44:24.659] [bmv2] [D] [thread 13715] [12.0] [cxt 0] Pipeline 'egress': end
+[17:44:24.660] [bmv2] [D] [thread 13715] [12.0] [cxt 0] Deparser 'deparser': start
+[17:44:24.660] [bmv2] [D] [thread 13715] [12.0] [cxt 0] Deparser 'deparser': end
+[17:44:24.661] [bmv2] [D] [thread 13719] [12.0] [cxt 0] Transmitting packet of size 98 out of port 0
