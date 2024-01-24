@@ -69,12 +69,12 @@ net.addLink('s5', 'h5')
 net.addLink('s6', 'h6')
 net.addLink('s7', 'h7')
 
-#net.setP4SourceAll('p4src/ecmp.p4')
-net.setP4SourceAll('repeater_without_table.p4')
+net.setP4SourceAll('p4src/ecmp.p4')
+#net.setP4SourceAll('repeater_without_table.p4')
 
 
 # Assignment strategy
-net.l2()
+net.l2() #Pour repeater_without_table.p4
 
 # Nodes general options
 net.enablePcapDumpAll()

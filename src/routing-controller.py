@@ -15,6 +15,9 @@ class RoutingController(object):
 
         self.node_list = eval(sys.argv[1])
         self.edge_list = eval(sys.argv[2])
+
+        self.shortest_paths = {}
+        self.logic_graph = nx.Graph()
         
         self.init()
 
@@ -22,7 +25,8 @@ class RoutingController(object):
         self.connect_to_switches()
         self.reset_states()
         self.set_table_defaults()
-        #self.shortest_path(self.node_list, self.edge_list)
+        self.set_graph()
+        self.shortest_path()
 
     #Reset le controller
     def reset_states(self):
@@ -33,30 +37,50 @@ class RoutingController(object):
             thrift_port = self.topo.get_thrift_port(p4switch)
             self.controllers[p4switch] = SimpleSwitchThriftAPI(thrift_port)
 
-    #
     def set_table_defaults(self):
         for controller in self.controllers.values():
             controller.table_set_default("ipv4_lpm", "drop", [])
             controller.table_set_default("ecmp_group_to_nhop", "drop", [])
 
-    #Calcule 
-    def shortest_path(self):
-        nl = self.node_list
-        el = self.edge_list
+    #Met en place le graph
+    def set_graph(self):
+        self.logic_graph.clear()
+        self.logic_graph.add_nodes_from(self.node_list)
+        self.logic_graph.add_edges_from(self.edge_list)
+        
 
-        
-        
-        
+    def shortest_path(self):
+        G = self.logic_graph
+
+        shortest_paths = {}
+
+        # Parcours de chaque nœud dans le graphe
+        for node in G.nodes():
+            # Calcul des plus courts chemins depuis le nœud actuel vers tous les autres nœuds
+            paths = nx.shortest_path(G, source=node)
+
+            # Ajout des chemins à shortest_paths
+            shortest_paths[node] = paths
+
+        self.shortest_paths = shortest_paths
 
     def route(self):
         switch_ecmp_groups = {sw_name:{} for sw_name in self.topo.get_p4switches().keys()}
 
         for sw_name, controller in self.controllers.items():
+            if sw_name not in self.node_list:
+                continue
+
             for sw_dst in self.topo.get_p4switches():
+                if sw_dst not in self.node_list:
+                    continue
 
                 #if its ourselves we create direct connections
                 if sw_name == sw_dst:
                     for host in self.topo.get_hosts_connected_to(sw_name):
+                        if host not in self.node_list:
+                            continue
+
                         sw_port = self.topo.node_to_node_port_num(sw_name, host)
                         host_ip = self.topo.get_host_ip(host) + "/32"
                         host_mac = self.topo.get_host_mac(host)
@@ -68,8 +92,14 @@ class RoutingController(object):
                 #check if there are directly connected hosts
                 else:
                     if self.topo.get_hosts_connected_to(sw_dst):
-                        paths = self.topo.get_shortest_paths_between_nodes(sw_name, sw_dst)
+
+                        #paths = self.topo.get_shortest_paths_between_nodes(sw_name, sw_dst)
+                        paths = self.shortest_paths[sw_name][sw_dst]
+
                         for host in self.topo.get_hosts_connected_to(sw_dst):
+
+                            if host not in self.node_list:
+                                continue
 
                             if len(paths) == 1:
                                 next_hop = paths[0][1]
