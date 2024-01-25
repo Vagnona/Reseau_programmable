@@ -3,6 +3,20 @@
 [Lien du git](git@github.com:Vagnona/reseau_programmable.git)
 [Documentation p4utils](https://nsg-ethz.github.io/p4-utils/p4utils.html)
 
+## Pour tester mon prog
+Syntaxe :
+```bash
+#-n Liste des nodes -e Liste des liens
+sudo python routing-controller.py -n node1 node1 node3 -e 'node1 node2' 'node2 node3'
+```
+
+Exemble : 
+```bash
+cd src/
+
+sudo python routing-controller.py -n h0 s0 s1 h1 s2 h2 -e 'h0 s0' 'h1 s1' 's0 s2' 's2 s1' 'h2 s2'
+```
+
 
 ## Modifications apportées sur la VM
 ```
