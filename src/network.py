@@ -74,7 +74,9 @@ net.setP4SourceAll('p4src/ecmp.p4')
 
 
 # Assignment strategy
-net.l2() #Pour repeater_without_table.p4
+#net.l2() Pour repeater_without_table.p4
+
+net.l3()
 
 # Nodes general options
 net.enablePcapDumpAll()

@@ -1,7 +1,7 @@
-# 1 "/home/p4/git/src/p4src/ecmp.p4"
+# 1 "/home/p4/reseau_programmable/src/p4src/ecmp.p4"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "/home/p4/git/src/p4src/ecmp.p4"
+# 1 "/home/p4/reseau_programmable/src/p4src/ecmp.p4"
 /* -*- P4_16 -*- */
 # 1 "/usr/local/share/p4c/p4include/core.p4" 1
 /*
@@ -86,7 +86,7 @@ match_kind {
     /// Longest-prefix match.
     lpm
 }
-# 3 "/home/p4/git/src/p4src/ecmp.p4" 2
+# 3 "/home/p4/reseau_programmable/src/p4src/ecmp.p4" 2
 # 1 "/usr/local/share/p4c/p4include/v1model.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
@@ -865,10 +865,10 @@ package V1Switch<H, M>(Parser<H, M> p,
                        ComputeChecksum<H, M> ck,
                        Deparser<H> dep
                        );
-# 4 "/home/p4/git/src/p4src/ecmp.p4" 2
+# 4 "/home/p4/reseau_programmable/src/p4src/ecmp.p4" 2
 
 //My includes
-# 1 "/home/p4/git/src/p4src/include/headers.p4" 1
+# 1 "/home/p4/reseau_programmable/src/p4src/include/headers.p4" 1
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
@@ -932,8 +932,8 @@ struct headers {
     ipv4_t ipv4;
     tcp_t tcp;
 }
-# 7 "/home/p4/git/src/p4src/ecmp.p4" 2
-# 1 "/home/p4/git/src/p4src/include/parsers.p4" 1
+# 7 "/home/p4/reseau_programmable/src/p4src/ecmp.p4" 2
+# 1 "/home/p4/reseau_programmable/src/p4src/include/parsers.p4" 1
 /*************************************************************************
 *********************** P A R S E R  *******************************
 *************************************************************************/
@@ -987,7 +987,7 @@ control MyDeparser(packet_out packet, in headers hdr) {
         packet.emit(hdr.tcp);
     }
 }
-# 8 "/home/p4/git/src/p4src/ecmp.p4" 2
+# 8 "/home/p4/reseau_programmable/src/p4src/ecmp.p4" 2
 
 /*************************************************************************
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
