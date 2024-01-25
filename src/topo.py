@@ -4,7 +4,7 @@ from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 import sys
 import networkx as nx
 
-class RoutingController(object):
+class Topology(object):
     def __init__(self):
         self.topo = load_topo('topology.json')
         self.controllers = {}
@@ -186,4 +186,4 @@ class RoutingController(object):
 
 
 if __name__ == "__main__":
-    controller = RoutingController().main()
+    controller = Topology().main()

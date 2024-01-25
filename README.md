@@ -7,14 +7,14 @@
 Syntaxe :
 ```bash
 #-n Liste des nodes -e Liste des liens
-sudo python routing-controller.py -n node1 node1 node3 -e 'node1 node2' 'node2 node3'
+sudo python topo.py -n node1 node1 node3 -e 'node1 node2' 'node2 node3'
 ```
 
 Exemble : 
 ```bash
 cd src/
 
-sudo python routing-controller.py -n h0 s0 s1 h1 s2 h2 -e 'h0 s0' 'h1 s1' 's0 s2' 's2 s1' 'h2 s2'
+sudo python topo.py -n h0 s0 s1 h1 s2 h2 -e 'h0 s0' 'h1 s1' 's0 s2' 's2 s1' 'h2 s2'
 ```
 
 
