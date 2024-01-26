@@ -4,12 +4,18 @@ from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 import sys
 import networkx as nx
 
+from equipement.router import Router
+
 class Topology(object):
+
     def __init__(self):
         self.topo = load_topo('topology.json')
         self.controllers = {}
 
-        self.node_list = self.fnodes(sys.argv[1:],len(sys.argv[1:]))
+        self.node_list = []
+        self.equipements = []
+        self.fnodes(sys.argv[1:],len(sys.argv[1:]))
+
         self.edge_list = self.fedges(sys.argv[1:],len(sys.argv[1:]))
 
         self.shortest_paths = {}
@@ -24,6 +30,28 @@ class Topology(object):
         self.set_graph()
         self.shortest_path()
 
+    def getnode_list(self):
+        return self.node_list
+    
+    def get_hosts_connected_to(self, node):
+        return self.topo.get_hosts_connected_to(node)
+
+    def get_host_ip(self, host):
+        return self.topo.get_host_ip(host)
+
+    def getcontrollers(self):
+        return self.controllers
+
+    def node_to_node_port_num(self, node, next_hop):
+        return self.topo.node_to_node_port_num(node, next_hop)
+
+    def node_to_node_mac(self, next_hop, node):
+        return self.topo.node_to_node_mac(next_hop, node)
+
+    def get_host_mac(self, host):
+        return self.topo.get_host_mac(host)
+
+    #Recupere les noeuds en argument pour les mettre sous forme de liste
     def fnodes(self, l_arg, taille):
         nodes = []
 
@@ -37,8 +65,14 @@ class Topology(object):
                 break
             arg.split
             nodes.append(arg)
-        return nodes
+        
+        for i in range(len(nodes)):
+            if i % 2 == 0:
+                self.node_list.append(nodes[i])
+            else:
+                self.equipements.append(nodes[i])
 
+    #Recupere les liens en argument pour les mettre sous forme de liste
     def fedges(self,l_arg,taille):
         edges = []
         index = 0
@@ -57,11 +91,13 @@ class Topology(object):
     def reset_states(self):
         [controller.reset_state() for controller in self.controllers.values()]
 
+
     def connect_to_switches(self):
         for p4switch in self.topo.get_p4switches():
             thrift_port = self.topo.get_thrift_port(p4switch)
             self.controllers[p4switch] = SimpleSwitchThriftAPI(thrift_port)
 
+    #Met regles par defaut en place.
     def set_table_defaults(self):
         for controller in self.controllers.values():
             controller.table_set_default("ipv4_lpm", "drop", [])
@@ -73,11 +109,13 @@ class Topology(object):
         self.logic_graph.add_nodes_from(self.node_list)
         self.logic_graph.add_edges_from(self.edge_list)
 
+    #Retourne le chemin le plus court de sw_name à sw_dst
     def getshortest_path(self, sw_name, sw_dst):
         paths = []
         paths.append(tuple(self.shortest_paths[sw_name][sw_dst]))
         return paths
 
+    #Calcule tout les plus courts chemins de tous les noeuds du graph
     def shortest_path(self):
         G = self.logic_graph
 
@@ -92,97 +130,12 @@ class Topology(object):
 
         self.shortest_paths = shortest_paths
 
-    def route(self):
-        print("################## ROUTE ##################")
-        switch_ecmp_groups = {sw_name:{} for sw_name in self.topo.get_p4switches().keys()}
-
-        for sw_name, controller in self.controllers.items():
-            if sw_name not in self.node_list:
-                continue
-
-            print("sw_name = ", sw_name)
-
-            for sw_dst in self.topo.get_p4switches():
-                if sw_dst not in self.node_list:
-                    continue
-
-                print("sw_dst = ", sw_dst)
-
-                #if its ourselves we create direct connections
-                if sw_name == sw_dst:
-                    print("sw_name == sw_dst")
-                    for host in self.topo.get_hosts_connected_to(sw_name):
-                        if host not in self.node_list:
-                            continue
-
-                        print("host = ", host)                        
-
-                        sw_port = self.topo.node_to_node_port_num(sw_name, host)
-                        host_ip = self.topo.get_host_ip(host) + "/32"
-                        host_mac = self.topo.get_host_mac(host)
-
-                        #add rule
-                        print("table_add at {}:".format(sw_name))
-                        self.controllers[sw_name].table_add("ipv4_lpm", "set_nhop", [str(host_ip)], [str(host_mac), str(sw_port)])
-
-                #check if there are directly connected hosts
-                else:
-                    if self.topo.get_hosts_connected_to(sw_dst):
-
-                        paths = self.getshortest_path(sw_name,sw_dst)
-
-                        for host in self.topo.get_hosts_connected_to(sw_dst):
-                            print("host dst = ", host)
-                            if host not in self.node_list:
-                                continue
-
-                            if len(paths) == 1:
-                                print("len(paths) == 1")
-                                next_hop = paths[0][1]
-                                host_ip = self.topo.get_host_ip(host) + "/24"
-                                sw_port = self.topo.node_to_node_port_num(sw_name, next_hop)
-                                dst_sw_mac = self.topo.node_to_node_mac(next_hop, sw_name)
-
-                                #add rule
-                                print("table_add at {}:".format(sw_name))
-                                self.controllers[sw_name].table_add("ipv4_lpm", "set_nhop", [str(host_ip)],
-                                                                    [str(dst_sw_mac), str(sw_port)])
-
-                            elif len(paths) > 1:
-                                print("len(paths) > 1")
-                                next_hops = [x[1] for x in paths]
-                                dst_macs_ports = [(self.topo.node_to_node_mac(next_hop, sw_name),
-                                                   self.topo.node_to_node_port_num(sw_name, next_hop))
-                                                  for next_hop in next_hops]
-                                host_ip = self.topo.get_host_ip(host) + "/24"
-
-                                #check if the ecmp group already exists. The ecmp group is defined by the number of next
-                                #ports used, thus we can use dst_macs_ports as key
-                                if switch_ecmp_groups[sw_name].get(tuple(dst_macs_ports), None):
-                                    ecmp_group_id = switch_ecmp_groups[sw_name].get(tuple(dst_macs_ports), None)
-                                    print("table_add at {}:".format(sw_name))
-                                    self.controllers[sw_name].table_add("ipv4_lpm", "ecmp_group", [str(host_ip)],
-                                                                        [str(ecmp_group_id), str(len(dst_macs_ports))])
-
-                                #new ecmp group for this switch
-                                else:
-                                    new_ecmp_group_id = len(switch_ecmp_groups[sw_name]) + 1
-                                    switch_ecmp_groups[sw_name][tuple(dst_macs_ports)] = new_ecmp_group_id
-
-                                    #add group
-                                    for i, (mac, port) in enumerate(dst_macs_ports):
-                                        print("table_add at {}:".format(sw_name))
-                                        self.controllers[sw_name].table_add("ecmp_group_to_nhop", "set_nhop",
-                                                                            [str(new_ecmp_group_id), str(i)],
-                                                                            [str(mac), str(port)])
-
-                                    #add forwarding rule
-                                    print("table_add at {}:".format(sw_name))
-                                    self.controllers[sw_name].table_add("ipv4_lpm", "ecmp_group", [str(host_ip)],
-                                                                        [str(new_ecmp_group_id), str(len(dst_macs_ports))])
-
-    def main(self):
-        self.route()
+    def main(self):        
+        for i in range(len(self.equipements)):
+            if self.equipements[i] == '1':
+                Router(self, self.node_list[i])
+            
+                
 
 
 if __name__ == "__main__":

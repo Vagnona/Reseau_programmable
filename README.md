@@ -14,7 +14,7 @@ Exemble :
 ```bash
 cd src/
 
-sudo python topo.py -n h0 s0 s1 h1 s2 h2 -e 'h0 s0' 'h1 s1' 's0 s2' 's2 s1' 'h2 s2'
+sudo python topo.py -n h0 1 s0 1 s1 1 h1 1 s2 1 h2 1 -e 'h0 s0' 'h1 s1' 's0 s2' 's2 s1' 'h2 s2'
 ```
 
 
