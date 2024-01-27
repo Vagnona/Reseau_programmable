@@ -1,0 +1,32 @@
+switchs:
+  - name: s1
+    type: router
+  - name: s2
+    type: router
+  - name: s3
+    type: router
+  - name: s4
+    type: router
+  - name: s5
+    type: router
+  - name: s6
+    type: router
+  - name: s7
+    type: router
+  - name: s8
+    type: router
+
+links:
+  - [s1, s2]
+  - [s2, s3]
+  - [s2, s4]
+  - [s3, s4]
+  - [s3, s5]
+  - [s3, s6]
+  - [s4, s5]
+  - [s4, s7]
+  - [s5, s6]
+  - [s5, s7]
+  - [s6, s7]
+  - [s6, s8]
+  - [s7, s8]

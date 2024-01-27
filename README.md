@@ -5,7 +5,7 @@
 
 
 
-## Modifications apportées
+## Modifications apportées à la VM
 ```
 Le nouveau fichier node.py rajoute l’option --enable-swap à la cible, pour activer la fonctionnalité
 ~/p4-tools/p4-utils/p4utils/utils/
@@ -26,9 +26,10 @@ le nouveau fichier thrift_API.py corrige un bug mineur de la plateforme.
 qemu-system-x86_64 -drive file=vm.qcow2,format=qcow2 -m 2048 -boot c -nic user,hostfwd=tcp::8888-:22 --nographic
 
 # Avec partage de dossier
-qemu-system-x86_64 -drive file=vm.qcow2,format=qcow2 -m 2048 -boot c -nic user,hostfwd=tcp::8888-:22 -virtfs local,path=./rapace,security_model=mapped,mount_tag=/home/p4/ --nographic
-
+qemu-system-x86_64 -drive file=vm.qcow2,format=qcow2 -m 2048 -boot c -nic user,hostfwd=tcp::8888-:22 -virtfs local,path=./rapace,security_model=none,mount_tag=rapace --nographic
 ```
+(rapace /home/p4/rapace 9p _netdev,trans=virtio,version=9p2000.u,msize=104857600 0 0) dans /etc/fstab
+
 
 Se connecter en ssh (mot de passe : p4) :
 
