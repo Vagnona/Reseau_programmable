@@ -3,11 +3,7 @@
     {
       "name" : "scalars_0",
       "id" : 0,
-      "fields" : [
-        ["userMetadata.ecmp_hash", 14, false],
-        ["userMetadata.ecmp_group_id", 14, false],
-        ["_padding_0", 4, false]
-      ]
+      "fields" : []
     },
     {
       "name" : "standard_metadata",
@@ -261,36 +257,9 @@
     {
       "name" : "calc",
       "id" : 0,
-      "algo" : "crc16",
-      "input" : [
-        {
-          "type" : "field",
-          "value" : ["ipv4", "srcAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4", "dstAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["tcp", "srcPort"]
-        },
-        {
-          "type" : "field",
-          "value" : ["tcp", "dstPort"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4", "protocol"]
-        }
-      ]
-    },
-    {
-      "name" : "calc_0",
-      "id" : 1,
       "source_info" : {
-        "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-        "line" : 111,
+        "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+        "line" : 80,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -350,120 +319,30 @@
   "learn_lists" : [],
   "actions" : [
     {
-      "name" : "NoAction",
+      "name" : "MyIngress.drop",
       "id" : 0,
       "runtime_data" : [],
-      "primitives" : []
+      "primitives" : [
+        {
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
+          "source_info" : {
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 25,
+            "column" : 8,
+            "source_fragment" : "mark_to_drop(standard_metadata)"
+          }
+        }
+      ]
     },
     {
-      "name" : "MyIngress.drop",
+      "name" : "MyIngress.set_nhop",
       "id" : 1,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "mark_to_drop",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "standard_metadata"
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 25,
-            "column" : 8,
-            "source_fragment" : "mark_to_drop(standard_metadata)"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.drop",
-      "id" : 2,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "mark_to_drop",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "standard_metadata"
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 25,
-            "column" : 8,
-            "source_fragment" : "mark_to_drop(standard_metadata)"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.ecmp_group",
-      "id" : 3,
-      "runtime_data" : [
-        {
-          "name" : "ecmp_group_id",
-          "bitwidth" : 14
-        },
-        {
-          "name" : "num_nhops",
-          "bitwidth" : 16
-        }
-      ],
-      "primitives" : [
-        {
-          "op" : "modify_field_with_hash_based_offset",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.ecmp_hash"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x00"
-            },
-            {
-              "type" : "calculation",
-              "value" : "calc"
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 1
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 29,
-            "column" : 8,
-            "source_fragment" : "hash(meta.ecmp_hash, ..."
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.ecmp_group_id"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 39,
-            "column" : 5,
-            "source_fragment" : "meta.ecmp_group_id = ecmp_group_id"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.set_nhop",
-      "id" : 4,
       "runtime_data" : [
         {
           "name" : "dstAddr",
@@ -488,8 +367,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 45,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 31,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.srcAddr = hdr.ethernet.dstAddr"
           }
@@ -507,8 +386,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 48,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 34,
             "column" : 8,
             "source_fragment" : "hdr.ethernet.dstAddr = dstAddr"
           }
@@ -526,8 +405,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 51,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 37,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -568,123 +447,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 54,
-            "column" : 8,
-            "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.set_nhop",
-      "id" : 5,
-      "runtime_data" : [
-        {
-          "name" : "dstAddr",
-          "bitwidth" : 48
-        },
-        {
-          "name" : "port",
-          "bitwidth" : 9
-        }
-      ],
-      "primitives" : [
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ethernet", "srcAddr"]
-            },
-            {
-              "type" : "field",
-              "value" : ["ethernet", "dstAddr"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 45,
-            "column" : 8,
-            "source_fragment" : "hdr.ethernet.srcAddr = hdr.ethernet.dstAddr"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ethernet", "dstAddr"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 48,
-            "column" : 8,
-            "source_fragment" : "hdr.ethernet.dstAddr = dstAddr"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["standard_metadata", "egress_spec"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 1
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 51,
-            "column" : 8,
-            "source_fragment" : "standard_metadata.egress_spec = port"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "ttl"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4", "ttl"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0xff"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 54,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 40,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -697,7 +461,7 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
+        "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
         "line" : 21,
         "column" : 8,
         "source_fragment" : "MyIngress"
@@ -708,8 +472,8 @@
           "name" : "MyIngress.ipv4_lpm",
           "id" : 0,
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 69,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 43,
             "column" : 10,
             "source_fragment" : "ipv4_lpm"
           },
@@ -727,57 +491,12 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [5, 3, 2],
-          "actions" : ["MyIngress.set_nhop", "MyIngress.ecmp_group", "MyIngress.drop"],
+          "action_ids" : [1, 0],
+          "actions" : ["MyIngress.set_nhop", "MyIngress.drop"],
           "base_default_next" : null,
           "next_tables" : {
-            "MyIngress.ecmp_group" : "MyIngress.ecmp_group_to_nhop",
             "MyIngress.set_nhop" : null,
             "MyIngress.drop" : null
-          },
-          "default_entry" : {
-            "action_id" : 2,
-            "action_const" : false,
-            "action_data" : [],
-            "action_entry_const" : false
-          }
-        },
-        {
-          "name" : "MyIngress.ecmp_group_to_nhop",
-          "id" : 1,
-          "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 57,
-            "column" : 10,
-            "source_fragment" : "ecmp_group_to_nhop"
-          },
-          "key" : [
-            {
-              "match_type" : "exact",
-              "name" : "meta.ecmp_group_id",
-              "target" : ["scalars", "userMetadata.ecmp_group_id"],
-              "mask" : null
-            },
-            {
-              "match_type" : "exact",
-              "name" : "meta.ecmp_hash",
-              "target" : ["scalars", "userMetadata.ecmp_hash"],
-              "mask" : null
-            }
-          ],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [1, 4, 0],
-          "actions" : ["MyIngress.drop", "MyIngress.set_nhop", "NoAction"],
-          "base_default_next" : null,
-          "next_tables" : {
-            "MyIngress.drop" : null,
-            "MyIngress.set_nhop" : null,
-            "NoAction" : null
           },
           "default_entry" : {
             "action_id" : 0,
@@ -793,8 +512,8 @@
           "name" : "node_2",
           "id" : 0,
           "source_info" : {
-            "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-            "line" : 83,
+            "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+            "line" : 56,
             "column" : 12,
             "source_fragment" : "hdr.ipv4.isValid()"
           },
@@ -818,8 +537,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-        "line" : 97,
+        "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+        "line" : 66,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -834,14 +553,14 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4",
-        "line" : 111,
+        "filename" : "/home/p4/reseau_programmable/src/p4src/router.p4",
+        "line" : 80,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
       "target" : ["ipv4", "hdrChecksum"],
       "type" : "generic",
-      "calculation" : "calc_0",
+      "calculation" : "calc",
       "verify" : false,
       "update" : true,
       "if_cond" : {
@@ -897,7 +616,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "/home/p4/reseau_programmable/src/p4src/ecmp.p4i",
+  "program" : "/home/p4/reseau_programmable/src/p4src/router.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"

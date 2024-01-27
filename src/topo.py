@@ -101,7 +101,7 @@ class Topology(object):
     def set_table_defaults(self):
         for controller in self.controllers.values():
             controller.table_set_default("ipv4_lpm", "drop", [])
-            controller.table_set_default("ecmp_group_to_nhop", "drop", [])
+            #controller.table_set_default("ecmp_group_to_nhop", "drop", [])
 
     #Met en place le graph
     def set_graph(self):
