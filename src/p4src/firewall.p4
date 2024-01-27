@@ -59,7 +59,7 @@ control MyIngress(inout headers hdr,
 			standard_metadata.egress_spec: exact;
 			hdr.ipv4.srcAddr: exact;
 			hdr.ipv4.dstAddr: exact;
-/*			hdr.ipv4.protocol: exact;*/
+			hdr.ipv4.protocol: exact;
 		}
 		actions = {
 			drop;
