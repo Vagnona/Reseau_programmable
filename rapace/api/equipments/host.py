@@ -12,3 +12,9 @@ class Host(Equipment):
 		super().__init__(name, network)
 
 	#endregion
+		
+	#region Méthodes d'instances publiques
+	def start(self):
+		""" Démarre l'hôte
+		"""
+		pass

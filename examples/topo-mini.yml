@@ -1,0 +1,8 @@
+switchs:
+  - name: s1
+    type: router
+  - name: s2
+    type: router
+
+links:
+  - [s1, s2]

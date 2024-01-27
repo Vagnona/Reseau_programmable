@@ -51,38 +51,14 @@ class Equipment():
 		self.network = network
 
 	#endregion
-			
-	#region getters/setters
-			
-	def is_host(self):
-		""" Renvoie True si l'équipement est un host, False sinon
-		"""
-		return self.type == HOST
-	
-			
-	def get_p4file(self):
-		""" Renvoie le nom du fichier P4 associé à l'équipement
-		"""
-		if self.type == HOST:
-			raise Exception("Hosts don't have a P4 file")
-		
-		return f"{P4SRC}{EQUIPMENT_TYPE[self.type][2]}"
-	
-
-	def get_thrift_port(self):
-		""" Renvoie le port thrift de l'équipement
-		"""
-		return self.network.get_topology().get_thrift_port(self.name)
-	
-
-	def get_api(self):
-		""" Renvoie l'API de l'équipement
-		"""
-		return SimpleSwitchThriftAPI(self.get_thrift_port())	
-
-	#endregion
 
 	#region Méthodes d'instances publiques
+
+	def start(self):
+		""" Démarre l'équipement, à implémenter dans les classes filles
+		"""
+		raise NotImplementedError("start() method not implemented")
+
 
 	def push_p4_program(self):
 		""" Push le programme P4 sur l'équipement
@@ -97,6 +73,10 @@ class Equipment():
 		self.swap_configs()
 
 
+	#endregion
+
+	#region Méthodes d'instances privées
+		
 	def compile_p4_program(self):
 		""" Compile le programme P4 de l'équipement
 		Retourne le nom du fichier JSON généré
@@ -117,7 +97,7 @@ class Equipment():
 	def swap_configs(self):
 		""" Swap les configurations de l'équipement
 		"""
-		api = self.get_api()
+		api = self.get_controller()
 		api.load_new_config_file(self.get_json_out())
 		api.swap_configs()
 		api.switch_info.load_json_config(api.client)
@@ -141,6 +121,36 @@ class Equipment():
 		
 		return False
 
+		
+	#endregion
+
+	#region getters/setters
+			
+	def is_host(self):
+		""" Renvoie True si l'équipement est un host, False sinon
+		"""
+		return self.type == HOST
+	
+			
+	def get_p4file(self):
+		""" Renvoie le nom du fichier P4 associé à l'équipement
+		"""
+		if self.type == HOST:
+			raise Exception("Hosts don't have a P4 file")
+		
+		return f"{P4SRC}{EQUIPMENT_TYPE[self.type][2]}"
+	
+
+	def get_thrift_port(self):
+		""" Renvoie le port thrift de l'équipement
+		"""
+		return self.network.get_topology().get_thrift_port(self.name)
+	
+
+	def get_controller(self):
+		""" Renvoie le controlleur de l'équipement
+		"""
+		return SimpleSwitchThriftAPI(self.get_thrift_port())	
 
 	#endregion
 

@@ -1,6 +1,8 @@
 from p4utils.mininetlib.network_API import NetworkAPI
 from p4utils.utils.helper import load_topo
 
+import networkx as nx
+
 from .equipments.type import *
 from .equipments.equipment import Equipment
 from .constants import *
@@ -52,9 +54,105 @@ class Network:
 			if e.type != HOST:
 				self.links.append((e, self.get_host_of_equipment(e)))
 
+		# On crée la topologie logique
+		self.logic_graph = nx.Graph()
 
 	#endregion
 				
+	#region Méthodes d'instances publiques
+
+	def start(self):
+		""" Démarre le réseau physique, puis upload les programmes P4 sur les switchs
+		"""
+		
+		# On démarre le réseau physique
+		self.start_physical_network()
+
+		# On upload les programmes P4 sur les switchs
+		self.push_p4_programs()
+
+		# On reset les états des contrôleurs
+		for e in self.get_switchs():
+			e.get_controller().reset_state()
+
+		# Pour chaque routeur
+		for r in self.get_equipments(ROUTER): #TODO -> mettre dans la fonction start de router.py ?
+			r.get_controller().table_set_default("ipv4_lpm", "drop", [])
+
+		# On calcule la topologie logique
+		self.compute_logic_graph()
+
+		# On démarre les équipements
+		for e in self.get_equipments():
+			e.start()
+
+
+	def stop(self):
+		""" Stoppe le réseau
+		"""
+		self.net.net.stop()
+
+	#endregion
+				
+	#region Méthodes d'instances privées
+
+	def start_physical_network(self):
+		""" Démarre le réseau physique
+		"""
+		create_if_not_exists(WORKING_DIR)
+
+		self.net = NetworkAPI()
+		self.net.setLogLevel('info')
+			
+		# On crée les hôtes
+		for h in self.get_equipments(HOST):
+			self.net.addHost(h.name)
+
+		# On crée les X switchs et leurs hosts
+		for e in self.get_switchs():
+			self.net.addP4Switch(e.name)
+			self.net.addLink(e.name, self.get_host_of_equipment(e).name)
+
+		# On crée une clique entre les switchs
+		for switch in self.net.switches():
+			for switch2 in [s for s in self.net.switches() if s != switch]:
+				# Si le lien inverse n'existe pas déjà
+				if (switch2, switch) not in self.net.links():
+					self.net.addLink(switch, switch2)
+
+		# On démarre le réseau
+		self.net.l3()
+		self.net.enablePcapDumpAll(self.get_pcap_path())
+		self.net.enableLogAll(self.get_log_path())
+		self.net.setTopologyFile(self.get_topology_path())
+		self.net.disableCli()
+		self.net.startNetwork()
+					
+	
+	def push_p4_programs(self):
+		""" Upload les programmes P4 sur les switchs
+		"""
+		# On upload les programmes P4 sur les switchs
+		for e in self.get_switchs():
+			e.push_p4_program()
+
+
+	def compute_logic_graph(self):
+		""" Calcule la topologie logique du réseau ET les chemins les plus courts entre les switchs
+		"""
+
+		self.logic_graph.clear()
+		self.logic_graph.add_nodes_from(self.get_switchs())
+		self.logic_graph.add_edges_from(self.get_links_not_host())
+
+		# On calcule les chemins les plus courts entre les switchs
+		self.shortest_paths = {}
+		for n in self.logic_graph.nodes():
+			self.shortest_paths[n] = nx.shortest_path(self.logic_graph, source=n)
+
+
+	#endregion
+		
 	#region Getters/Setters
 			
 	def get_equipments(self, type=None):
@@ -100,7 +198,7 @@ class Network:
 		""" Renvoie la liste des liens d'un équipement
 		"""
 		return [l for l in self.links if l[0] == equipment or l[1] == equipment]
-	
+
 
 	def get_links_not_host(self):
 		""" Renvoie la liste des liens qui ne sont pas des liens d'hôtes
@@ -130,71 +228,38 @@ class Network:
 		""" Renvoie la topologie du réseau
 		"""
 		return load_topo(self.get_topology_path())
-	#endregion
-
-	#region Méthodes d'instances publiques
-
-	def start(self):
-		""" Démarre le réseau physique, puis upload les programmes P4 sur les switchs
-		"""
-		
-		# On démarre le réseau physique
-		self.start_physical_network()
-
-		# On upload les programmes P4 sur les switchs
-		self.push_p4_programs()		
-
-
-	def stop(self):
-		""" Stoppe le réseau
-		"""
-		self.net.net.stop()
-
-
-	#endregion
-
-	#region Méthodes d'instances privées
-
-	def start_physical_network(self):
-		""" Démarre le réseau physique
-		"""
-		create_if_not_exists(WORKING_DIR)
-
-		self.net = NetworkAPI()
-		self.net.setLogLevel('info')
-			
-		# On crée les hôtes
-		for h in self.get_equipments(HOST):
-			self.net.addHost(h.name)
-
-		# On crée les X switchs et leurs hosts
-		for e in self.get_switchs():
-			self.net.addP4Switch(e.name)
-			self.net.addLink(e.name, self.get_host_of_equipment(e).name)
-
-		# On crée une clique entre les switchs
-		for switch in self.net.switches():
-			for switch2 in [s for s in self.net.switches() if s != switch]:
-				# Si le lien inverse n'existe pas déjà
-				if (switch2, switch) not in self.net.links():
-					self.net.addLink(switch, switch2)
-
-		# On démarre le réseau
-		self.net.l2()
-		self.net.enablePcapDumpAll(self.get_pcap_path())
-		self.net.enableLogAll(self.get_log_path())
-		self.net.setTopologyFile(self.get_topology_path())
-		self.net.disableCli()
-		self.net.startNetwork()
-					
-
 	
-	def push_p4_programs(self):
-		""" Upload les programmes P4 sur les switchs
+
+	def get_adjacent_nodes(self, node):
+		""" Renvoie les noeuds adjacents à un noeud
 		"""
-		# On upload les programmes P4 sur les switchs
-		for e in self.get_switchs():
-			e.push_p4_program()
+		# On regarde si il existe un lien entre le noeud et un autre noeud
+		adjacent_nodes = []
+		for l in self.get_links():
+			if l[0] == node:
+				adjacent_nodes.append(l[1])
+			elif l[1] == node:
+				adjacent_nodes.append(l[0])
+		
+		return adjacent_nodes
+	
+
+	def get_adjacent_switchs(self, node):
+		""" Renvoie les switchs adjacents à un noeud
+		"""
+		return [n for n in self.get_adjacent_nodes(node) if not n.is_host()]
+	
+
+	def get_adjacent_hosts(self, node):
+		""" Renvoie les hôtes adjacents à un noeud
+		"""
+		return [n for n in self.get_adjacent_nodes(node) if n.is_host()]
+	
+	#Retourne le chemin le plus court de sw_name à sw_dst #TODO ranger
+	def getshortest_path(self, sw_name, sw_dst):
+			paths = []
+			paths.append(tuple(self.shortest_paths[sw_name][sw_dst]))
+			return paths
 
 
 	#endregion
