@@ -55,11 +55,11 @@ control MyIngress(inout headers hdr,
 
 	table firewall {
 		key = {
-			standard_metadata.ingress_port: exact;
-			standard_metadata.egress_spec: exact;
 			hdr.ipv4.srcAddr: exact;
 			hdr.ipv4.dstAddr: exact;
 			hdr.ipv4.protocol: exact;
+			hdr.tcp.srcPort: exact;
+			hdr.tcp.dstPort: exact;
 		}
 		actions = {
 			drop;
