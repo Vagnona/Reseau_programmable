@@ -76,3 +76,33 @@ def append_link(equipement1, equipement2):
 	global network
 
 	network.add_link(equipement1, equipement2)
+
+
+def add_fw_rule(fw, ip_src, ip_dst, port_src, port_dst, protocol):
+	""" Ajoute une règle au firewall
+	"""
+	global network
+
+	network.add_fw_rule(fw, ip_src, ip_dst, port_src, port_dst, protocol)
+
+
+def see_filters():
+	""" Affiche les règles du firewall
+	"""
+	global network
+
+	network.see_filters()
+
+def see_load():
+	""" Affiche le nombre de paquets recus 
+	"""
+	global network
+
+	network.see_load()
+
+def sw(sw_id, equipment):
+	""" Affiche les switchs
+	"""
+	global network
+
+	network.sw(sw_id, equipment)

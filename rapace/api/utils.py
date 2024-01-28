@@ -63,3 +63,18 @@ def to_size(text, size):
 	else:
 		l = len(text)/2
 		return " "*int(size/2-l) + text + " "*int(size/2-l)
+	
+
+def is_valid_ip(ip):
+	""" Vérifie que l'ip est valide
+	"""
+	try:
+		ip = ip.split(".")
+		if len(ip) != 4:
+			return False
+		for i in ip:
+			if int(i) < 0 or int(i) > 255:
+				return False
+	except:
+		return False
+	return True

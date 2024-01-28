@@ -2,7 +2,7 @@ from p4utils.utils.helper import load_topo
 from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 from p4utils.utils.compiler import * 
 
-from .type import HOST, ROUTER, EQUIPMENT_TYPE
+from .type import HOST, ROUTER, EQUIPMENT_TYPE, FIREWALL
 from ..constants import P4SRC, WORKING_DIR
 from ..utils import get_cksum
 
@@ -24,11 +24,14 @@ class Equipment():
 		"""
 		from .host import Host
 		from .router import Router
+		from .firewall import Firewall
 
 		if type == HOST:
 			return Host(name, network)
 		elif type == ROUTER:
 			return Router(name, network)
+		elif type == FIREWALL:
+			return Firewall(name, network)
 		else:
 			raise Exception(f"Unknown equipment type {type}")
 
@@ -41,12 +44,16 @@ class Equipment():
 		"""
 		from .host import Host
 		from .router import Router
+		from .firewall import Firewall
 
 		self.name = name
 		if isinstance(self, Host):
 			self.type = HOST
 		elif isinstance(self, Router):
 			self.type = ROUTER
+		elif isinstance(self, Firewall):
+			self.type = FIREWALL
+
 		
 		self.network = network
 

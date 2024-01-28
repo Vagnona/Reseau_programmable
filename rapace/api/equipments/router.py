@@ -82,6 +82,15 @@ class Router(Equipment):
 			[str(ip)],[str(mac), str(port)]
 		)
 
+	def see_load(self):
+		""" Affiche le nombre de paquets recus 
+		"""
+		return #TODO
+		#On récupère le compteur
+		drop = self.get_controller().counter_read("nombre_paquets_total", 1)
+
+		print(f"{self.name} a recu {drop} paquets")
+
 	#endregion
 			
 	#region getters/setters

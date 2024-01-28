@@ -1,6 +1,6 @@
 switchs:
   - name: s0
-    type: router
+    type: firewall
   - name: s1
     type: router
   - name: s2

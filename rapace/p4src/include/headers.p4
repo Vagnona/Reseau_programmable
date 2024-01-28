@@ -3,6 +3,8 @@
 *************************************************************************/
 
 const bit<16> TYPE_IPV4 = 0x800;
+const bit<8>  TYPE_TCP  = 6;
+const bit<8>  TYPE_UDP  = 17;
 
 typedef bit<9>  egressSpec_t;
 typedef bit<48> macAddr_t;
@@ -51,12 +53,26 @@ header tcp_t{
     bit<16> urgentPtr;
 }
 
+header udp_t {
+	bit<16> srcPort;
+	bit<16> dstPort;
+	bit<16> length;
+	bit<16> checksum;
+}
+
 struct metadata {
+	//utilisé pour le rate-limit du load-balancer
+	bit<32> meter_tag;
+	//utilisé pour le load-balancer
+	bit<32> port_out_modulo;
+	bit<16> srcPort;
+	bit<16> dstPort;
 }
 
 struct headers {
-    ethernet_t   ethernet;
-    ipv4_t       ipv4;
-    tcp_t        tcp;
+    	ethernet_t   	ethernet;
+    	ipv4_t       	ipv4;
+    	tcp_t        	tcp;
+	udp_t		udp;
 }
 

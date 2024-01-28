@@ -76,6 +76,8 @@ class Network:
 		# On calcule la topologie logique
 		self.compute_logic_graph()
 
+		self.check_valid_network()
+
 		# On démarre les équipements
 		for e in self.get_equipments():
 			e.start()
@@ -119,7 +121,7 @@ class Network:
 		self.compute_logic_graph()
 
 		# On réinstalle les règles de routage
-		for e in self.get_switchs():
+		for e in self.get_equipments(ROUTER):
 			e.start()
 
 
@@ -130,19 +132,22 @@ class Network:
 		e2 = self.get_equipment_by_name(equipment2)
 
 		# On supprime le lien
-		self.links = [l for l in self.links if not ((l[0] == e1 and l[1] == e2) or (l[0] == e2 and l[1] == e1))]
+		link = [l for l in self.links if (l[0] == e1 and l[1] == e2) or (l[0] == e2 and l[1] == e1)][0]
+		self.links = [l for l in self.links if l != link]
 
 		# On recalcul la topologie logique
 		self.compute_logic_graph()
 
-		# On vérifie que le graphe est toujours connexe
-		if not nx.is_connected(self.logic_graph):
-			#Sinon, on remet le lien
-			self.links.append([e1, e2, 512])
-			raise Exception(f"La suppression du lien entre {e1} et {e2} rend le reseau non connexe")
+		# On vérifie que le graphe est toujours valide
+		try:
+			self.check_valid_network()
+		except Exception as e:
+			# Si le graphe n'est pas valide, on remet le lien
+			self.links.append(link)
+			raise e
 
 		# On réinstalle les règles de routage
-		for e in self.get_switchs():
+		for e in self.get_equipments(ROUTER):
 			e.start()
 
 
@@ -163,8 +168,92 @@ class Network:
 		self.compute_logic_graph()
 
 		# On réinstalle les règles de routage
-		for e in self.get_switchs():
+		for e in self.get_equipments(ROUTER):
 			e.start()
+
+	def add_fw_rule(self, fw, ip_src, ip_dst, port_src, port_dst, protocol):
+		""" Ajoute une règle au firewall
+		"""
+		# On récupère le firewall
+		fw = self.get_equipment_by_name(fw)
+
+		# On vérifie que le firewall est bien un firewall
+		if fw.type != FIREWALL:
+			raise Exception(f"{fw.name} n'est pas un firewall")
+
+		# On ajoute la règle
+		fw.add_rule(ip_src, ip_dst, port_src, port_dst, protocol)
+
+	
+	def see_filters(self):
+		""" Affiche les règles du firewall
+		"""
+		# On récupère les firewalls
+		firewalls = self.get_equipments(FIREWALL)
+
+		# On affiche le nombre de paquet filtrés par chaque firewall
+		for fw in firewalls:
+			fw.see_filters()
+
+	def see_load(self):
+		""" Affiche le nombre de paquets recus 
+		"""
+		# On récupère les switchs
+		switchs = self.get_switchs()
+
+		# On affiche le nombre de paquet filtrés par chaque equipement
+		for sw in switchs:
+			sw.see_load()
+
+	def sw(self, sw_id, equipment):
+		""" Swap l'équipement sur un switch
+		"""
+
+		if equipment not in EQUIPMENT_TYPES:
+			raise Exception(f"Type d'équipement {equipment} inconnu")
+		
+		# On get le switch
+		switch_old = self.get_equipment_by_name(sw_id)
+
+
+		# On ajoute le nouvel équipement
+		switch_new = Equipment.new_equipment(sw_id, EQUIPMENT_TYPES[equipment], self)
+		
+		# On le remplce dans la liste des équipements
+		self.equipments = [e for e in self.equipments if e.name != sw_id]
+		self.equipments.append(switch_new)
+
+		# On modifie les liens
+		for l in self.links:
+			if l[0] == switch_old:
+				l[0] = switch_new
+			elif l[1] == switch_old:
+				l[1] = switch_new
+
+		# On recalcule la topologie logique
+		self.compute_logic_graph()
+
+		# On vériie que le graphe est toujours valide
+		try:
+			self.check_valid_network()
+		except Exception as e:
+			# Si le graphe n'est pas valide, on remet le lien
+			self.equipments = [e for e in self.equipments if e.name != sw_id]
+			self.equipments.append(switch_old)
+			for l in self.links:
+				if l[0] == switch_new:
+					l[0] = switch_old
+				elif l[1] == switch_new:
+					l[1] = switch_old
+			raise e
+
+		print(switch_new)
+		print(self)
+
+		# On réinstalle les règles de routage
+		for e in self.get_equipments(ROUTER):
+			e.start()
+
 
 	#endregion
 				
@@ -226,6 +315,20 @@ class Network:
 			self.shortest_paths[n] = nx.shortest_path(self.logic_graph, source=n)
 
 
+	def check_valid_network(self):
+		""" Vérifie si le réseau est valide
+		- Connexe
+		- Firewall connecté à deux switchs
+		"""
+
+		# On vérifie que le graphe est connexe
+		if not nx.is_connected(self.logic_graph):
+			raise Exception("Le réseau n'est pas connexe")
+		
+		# On vérifie que chaque firewall est connecté à deux switchs
+		for e in self.get_equipments(FIREWALL):
+			e.is_valid()
+
 	#endregion
 		
 	#region Getters/Setters
@@ -279,6 +382,18 @@ class Network:
 		return [l for l in self.links if not (l[0].is_host() or l[1].is_host())]
 
 	
+	def get_switchs_of_equipment(self, equipment):
+		""" Renvoie la liste des switchs connectés à un équipement
+		"""
+		res = [l[1] for l in self.links if l[0] == equipment]
+		res += [l[0] for l in self.links if l[1] == equipment]
+
+		# Si on a plus de deux equipements, on supprime les hosts
+		if len(res) > 2:
+			res = [e for e in res if not e.is_host()]
+		return res
+
+
 	def get_pcap_path(self):
 		""" Renvoie le chemin des fichiers pcap
 		"""

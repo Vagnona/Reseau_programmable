@@ -7,7 +7,7 @@
 *************************************************************************/
 
 #include "include/headers.p4"
-#include "include/parser.p4"
+#include "include/parsers.p4"
 
 /*************************************************************************
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
@@ -27,9 +27,9 @@ control MyIngress(inout headers hdr,
                   inout standard_metadata_t standard_metadata) {
 
 	counter(1, CounterType.packets_and_bytes) nombre_paquets_total;
-	counter(1, CounterType.packets_and_bytes) nombre_paquets_dropped;
+	counter(2, CounterType.packets_and_bytes) nombre_paquets_dropped;
 
-    action forward(spec_t egress_port, macAddr_t dstAddr){
+    action forward(egressSpec_t egress_port, macAddr_t dstAddr){
         standard_metadata.egress_spec = egress_port;
 	hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
 	hdr.ethernet.dstAddr = dstAddr;
@@ -62,16 +62,14 @@ control MyIngress(inout headers hdr,
 			hdr.ipv4.srcAddr: exact;
 			hdr.ipv4.dstAddr: exact;
 			hdr.ipv4.protocol: exact;
-
-			/* somme des 2 car un seul est utilisé, l'autre est nul */
-			hdr.tcp.srcPort + hdr.udp.srcPort: exact;
-			hdr.tcp.dstPort + hdr.tcp.dstPort: exact;
+			meta.srcPort: exact;
+			meta.dstPort: exact;
 		}
 		actions = {
 			drop;
 			NoAction;
 		}
-		size = 256;
+		size = 4096;
 		default_action = NoAction;
 	}
 

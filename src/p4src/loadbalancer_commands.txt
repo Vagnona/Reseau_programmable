@@ -1,4 +1,0 @@
-table_add meter1_read meter_action 2 =>
-table_add meter2_read meter_action 3 =>
-table_add meter_filter NoAction 0 =>
-meter_array_set_rates my_meter 0.000001:1 0.00001:1
