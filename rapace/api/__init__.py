@@ -44,4 +44,35 @@ def stop_network():
 	global network
 	
 	network.stop()
+
+
+def see_topology():
+	""" Affiche la topologie
+	"""
+	global network
+
+	print(network)
 	
+
+def change_weight(equipement1, equipement2, weight):
+	""" Change le poids d'un lien
+	"""
+	global network
+
+	network.change_weight(equipement1, equipement2, weight)
+
+
+def delete_link(equipement1, equipement2):
+	""" Supprime un lien
+	"""
+	global network
+
+	network.del_link(equipement1, equipement2)
+
+
+def append_link(equipement1, equipement2):
+	""" Ajoute un lien
+	"""
+	global network
+
+	network.add_link(equipement1, equipement2)

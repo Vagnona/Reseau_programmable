@@ -6,7 +6,7 @@ import networkx as nx
 from .equipments.type import *
 from .equipments.equipment import Equipment
 from .constants import *
-from .utils import create_if_not_exists
+from .utils import create_if_not_exists, to_size
 
 class Network:
 	"""Classe représentant le réseau
@@ -43,17 +43,18 @@ class Network:
 		self.links = []
 		for l in links:
 			self.links.append(
-				(
+				[
 					self.get_equipment_by_name(l[0]),
-		 			self.get_equipment_by_name(l[1])
-				)
+		 			self.get_equipment_by_name(l[1]),
+					int(MAX_WEIGHT/2)
+				]
 			)
 
 		# On crée un lien entre chaque équipement et ses hôtes
 		for e in self.equipments:
 			if e.type != HOST:
 				for h in [h for h in self.equipments if h.name == f"{e.name}_host"]:
-					self.links.append((e, h))
+					self.links.append([e, h, 512])
 
 		# On crée la topologie logique
 		self.logic_graph = nx.Graph()
@@ -84,6 +85,86 @@ class Network:
 		""" Stoppe le réseau
 		"""
 		self.net.net.stop()
+
+
+	def change_weight(self, equipment1, equipment2, weight):
+		""" Change le poids d'un lien
+		Recalcule la topologie logique
+		Réinstalle les règles de routage
+		"""
+		#On cherhce l'équipement 1 et 2
+		e1 = self.get_equipment_by_name(equipment1)
+		e2 = self.get_equipment_by_name(equipment2)
+		
+		# On vérifie que weight est un entier
+		try:
+			weight = int(weight)
+		except:
+			raise Exception("Le poids doit etre un entier")
+
+		# On vérifie que le poids est valide
+		if weight < 0 or weight > MAX_WEIGHT:
+			raise Exception(f"Le poids doit etre compris entre 0 et {MAX_WEIGHT}")
+		
+		# On vériie que les équipements sont bien connectés
+		if e1 not in self.get_adjacent_nodes(e2):
+			raise Exception(f"Les equipements {e1} et {e2} ne sont pas connectes")
+
+		# On change le poids du lien
+		for l in self.links:
+			if (l[0] == e1 and l[1] == e2) or (l[0] == e2 and l[1] == e1):
+				l[2] = weight
+		
+		# On recalcule la topologie logique
+		self.compute_logic_graph()
+
+		# On réinstalle les règles de routage
+		for e in self.get_switchs():
+			e.start()
+
+
+	def del_link(self, equipment1, equipment2):
+		""" Supprime un lien
+		"""
+		e1 = self.get_equipment_by_name(equipment1)
+		e2 = self.get_equipment_by_name(equipment2)
+
+		# On supprime le lien
+		self.links = [l for l in self.links if not ((l[0] == e1 and l[1] == e2) or (l[0] == e2 and l[1] == e1))]
+
+		# On recalcul la topologie logique
+		self.compute_logic_graph()
+
+		# On vérifie que le graphe est toujours connexe
+		if not nx.is_connected(self.logic_graph):
+			#Sinon, on remet le lien
+			self.links.append([e1, e2, 512])
+			raise Exception(f"La suppression du lien entre {e1} et {e2} rend le reseau non connexe")
+
+		# On réinstalle les règles de routage
+		for e in self.get_switchs():
+			e.start()
+
+
+	def add_link(self, equipment1, equipment2):
+		""" Ajoute un lien
+		"""
+		e1 = self.get_equipment_by_name(equipment1)
+		e2 = self.get_equipment_by_name(equipment2)
+
+		# On vérifie que les équipements ne sont pas déjà connectés
+		if e1 in self.get_adjacent_nodes(e2):
+			raise Exception(f"Les equipements {e1} et {e2} sont deja connectes")
+		
+		# On ajoute le lien
+		self.links.append([e1, e2, 512])
+
+		# On recalcul la topologie logique
+		self.compute_logic_graph()
+
+		# On réinstalle les règles de routage
+		for e in self.get_switchs():
+			e.start()
 
 	#endregion
 				
@@ -137,7 +218,7 @@ class Network:
 
 		self.logic_graph.clear()
 		self.logic_graph.add_nodes_from(self.get_switchs())
-		self.logic_graph.add_edges_from(self.get_links_not_host())
+		self.logic_graph.add_weighted_edges_from(self.get_links_not_host())
 
 		# On calcule les chemins les plus courts entre les switchs
 		self.shortest_paths = {}
@@ -167,10 +248,10 @@ class Network:
 	def get_equipment_by_name(self, name):
 		""" Renvoie l'équipement à partir de son nom
 		"""
-		for e in self.equipments:
-			if e.name == name:
-				return e
-		return None
+		res = [e for e in self.equipments if e.name == name]
+		if len(res) == 0:
+			raise Exception(f"Equipement {name} introuvable")
+		return res[0]
 
 
 	def get_hosts_of_equipment(self, equipment):
@@ -267,6 +348,7 @@ class Network:
 		"""
 		return self.get_topology().node_to_node_mac(n1.name, n2.name)
 
+
 	#endregion
 
 	#region Méthodes spéciales
@@ -274,8 +356,7 @@ class Network:
 	def __str__(self):
 		""" Affiche le réseau
 		"""
-		s = '==== Network: ====\n'
-
+		s = ''
 		# On affiche les équipements
 		s += 'Equipments:\n'
 		for e in self.get_switchs():
@@ -284,8 +365,9 @@ class Network:
 		# On affiche les liens
 		s += '\nLinks:\n'
 		for l in self.get_links_not_host():
-			s += f"  {l[0]} <-> {l[1]}\n"
-		return s
-	
+			s += f"  {l[0]} <---{to_size(str(l[2]), 6)}---> {l[1]}\n"
+
+		# On retire le dernier \n
+		return s[:-1]
 
 	#endregion

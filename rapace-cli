@@ -9,28 +9,43 @@ Usage: ./rapace <topology-file>
 import sys
 import os
 
-from rapace import start, stop
+from rapace import *
+from rapace.prompt import *
 
 if __name__ == '__main__':
 
 	# On vérifie qu'il y a bien 2 arguments
 	if len(sys.argv) != 2:
-		print("ERROR: Usage: ./rapace.py <topology-file>")
+		log(ERROR, "Usage: ./rapace.py <topology-file>")
 		sys.exit(1)
 	topology_file = sys.argv[1]
 
 	# On vérifie que c'est bien run avec les droits root
 	if not hasattr(os, 'geteuid') or os.geteuid() != 0:
-		print("ERROR: Ce script doit etre execute avec les droits root")
+		log(ERROR, "Ce script doit etre execute avec les droits root")
 		sys.exit(1)
 
 	# On démarre le réseau
-	start(topology_file)
-	print("INFO: Reseau demarre !")
+	start(topology_file) #TODO: remmetre ça dans le try
+	try:
+		pass
+	except KeyboardInterrupt:
+		print("")
+		log(INFO, "Bye !")
+		sys.exit(0)
+	except Exception as e:
+		log(ERROR, f"Erreur lors du demarrage du reseau : {e}")
+		stop()
+		sys.exit(1)
+	
 
-	# On attend que l'utilisateur appuie sur entrée pour quitter
-	input("Appuyez sur entree pour quitter...")
+	# On lance la boucle principale
+	try:
+		prompt()
+	except KeyboardInterrupt or EOFError:
+		pass
+	print("")
+	log(INFO, "Bye !")
 
 	# On stoppe le réseau
 	stop()
-	print("INFO: Reseau stoppe !")

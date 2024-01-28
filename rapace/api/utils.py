@@ -54,3 +54,12 @@ def create_if_not_exists(path):
 	"""
 	if not os.path.exists(path):
 		os.makedirs(path)
+
+def to_size(text, size):
+	""" Ajout des espaces au début et à la fin d'un texte pour qu'il fasse une certaine taille
+	"""
+	if len(text) > size:
+		return text
+	else:
+		l = len(text)/2
+		return " "*int(size/2-l) + text + " "*int(size/2-l)

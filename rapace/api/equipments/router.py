@@ -19,33 +19,6 @@ class Router(Equipment):
 
 	#endregion
 		
-	#region getters/setters
-		
-	def get_cksum(self):
-		return Router.cksum
-	
-
-	def set_cksum(self, cksum):
-		Router.cksum = cksum
-
-	
-	def get_json_out(self):
-		""" Renvoie le json de l'équipement
-		"""
-		return Router.json
-	
-
-	def set_json_out(self, json):
-		Router.json = json
-
-	
-	def get_routing_table(self):
-		""" Renvoie la table de routage de l'équipement
-		"""
-		return self.get_controller().get_routing_table(self.name)
-
-	#endregion
-
 	# region Méthodes d'instances publiques
 	
 	def start(self):
@@ -61,6 +34,9 @@ class Router(Equipment):
 	def add_routing_rules(self):
 		""" Ajoute les règles de routage
 		"""
+
+		# On supprime toutes les règles de routage
+		self.get_controller().table_clear("ipv4_lpm")
 		
 		# On ajoute la règle de routage par défaut
 		self.get_controller().table_set_default("ipv4_lpm", "drop", [])
@@ -105,3 +81,32 @@ class Router(Equipment):
 			"ipv4_lpm", "set_nhop",
 			[str(ip)],[str(mac), str(port)]
 		)
+
+	#endregion
+			
+	#region getters/setters
+		
+	def get_cksum(self):
+		return Router.cksum
+	
+
+	def set_cksum(self, cksum):
+		Router.cksum = cksum
+
+	
+	def get_json_out(self):
+		""" Renvoie le json de l'équipement
+		"""
+		return Router.json
+	
+
+	def set_json_out(self, json):
+		Router.json = json
+
+	
+	def get_routing_table(self):
+		""" Renvoie la table de routage de l'équipement
+		"""
+		return self.get_controller().get_routing_table(self.name)
+
+	#endregion
