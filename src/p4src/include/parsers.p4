@@ -33,11 +33,15 @@ parser MyParser(packet_in packet,
 
     state parse_tcp {
         packet.extract(hdr.tcp);
+	meta.srcPort = hdr.tcp.srcPort;
+	meta.dstPort = hdr.tcp.dstPort;
         transition accept;
     }
 
 	state parse_udp {
 		packet.extract(hdr.udp);
+		meta.srcPort = hdr.udp.srcPort;
+		meta.dstPort = hdr.udp.dstPort;
 		transition accept;
 	}
 }

@@ -62,16 +62,14 @@ control MyIngress(inout headers hdr,
 			hdr.ipv4.srcAddr: exact;
 			hdr.ipv4.dstAddr: exact;
 			hdr.ipv4.protocol: exact;
-
-			/* somme des 2 car un seul est utilisé, l'autre est nul */
-			hdr.tcp.srcPort + hdr.udp.srcPort: exact @name("src port number");
-			hdr.tcp.dstPort + hdr.tcp.dstPort: exact @name("dst port number");
+			meta.srcPort: exact;
+			meta.dstPort: exact;
 		}
 		actions = {
 			drop;
 			NoAction;
 		}
-		size = 256;
+		size = 4096;
 		default_action = NoAction;
 	}
 

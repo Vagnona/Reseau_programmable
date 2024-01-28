@@ -65,6 +65,8 @@ struct metadata {
 	bit<32> meter_tag;
 	//utilisé pour le load-balancer
 	bit<32> port_out_modulo;
+	bit<16> srcPort;
+	bit<16> dstPort;
 }
 
 struct headers {
