@@ -61,7 +61,10 @@ header udp_t {
 }
 
 struct metadata {
+	//utilisé pour le rate-limit du load-balancer
 	bit<32> meter_tag;
+	//utilisé pour le load-balancer
+	bit<32> port_out_modulo;
 }
 
 struct headers {

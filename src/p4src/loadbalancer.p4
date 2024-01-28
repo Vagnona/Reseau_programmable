@@ -27,47 +27,10 @@ control MyIngress(inout headers hdr,
 
 	counter(1, CounterType.packets_and_bytes) nombre_paquets;
 
-	direct_meter<bit<32>>(MeterType.packets) meter1;
-	direct_meter<bit<32>>(MeterType.packets) meter2;
+	direct_meter<bit<32>>(MeterType.packets) meter;
 
 	action drop() {
         	mark_to_drop(standard_metadata);
-	}
-
-    	action meter_action() {
-		if (standard_metadata.egress_spec == 2) {
-	        	meter1.read(meta.meter_tag);
-		}
-		else {
-			meter2.read(meta.meter_tag);
-		}
-	}
-
-    	table meter1_read {
-        	key = {
-	            standard_metadata.egress_spec: exact;
-        	}
-	        actions = {
-        	    meter_action;
-	            NoAction;
-        	}
-	        default_action = NoAction;
-        	meters = meter1;
-		meters = meter2;
-	        size = 16384;
-    	}
-
-	table meter2_read {
-	    key = {
-	            standard_metadata.egress_spec: exact;
-	    }
-	    actions = {
-        	meter_action;
-	        NoAction;
-	    }
-	    default_action = NoAction;
-	    meters = meter2;
-	    size = 16384;
 	}
 
     	table meter_filter {
@@ -82,12 +45,43 @@ control MyIngress(inout headers hdr,
         	size = 16;
 	}
 
+	action balance(bit<32> nombre_ports_out, bit<32> num_port_in){
+		standard_metadata.egress_spec = (hdr.ipv4.srcAddr + hdr.ipv4.dstAddr + hdr.tcp.srcPort + hdr.tcp.dstPort + hdr.ipv4.protocol) % nombre_ports_out + 1;
+		if (standard_metadata.egress_spec >= num_port_in) {
+			standard_metadata.egress_spec = standard_metadata.egress_spec + 1;
+		}
+	}
+
+	action forward_vers_in(macAddr_t dstAddr, egressSpec_t port_in) {
+		standard_metadata.egress_spec = port_in;
+		hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+		hdr.ethernet.dstAddr = dstAddr;
+	}
+
+	action forward_vers_out(macAddr_t dstAddr) {
+		hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+		hdr.ethernet.dstAddr = dstAddr;
+		meter.read(meta.meter_tag);
+	}
+		
+	table post_balance {
+		key = {
+			standard_metadata.egress_spec: exact;
+		}
+		actions = {
+			NoAction;
+			forward_vers_out;
+		size = 4096;
+		meters = meter;
+	}
+
 	table forward {
 		key = {
 			standard_metadata.ingress_port: exact;
 		}
 		actions = {
 			balance;
+			forward_vers_in;
 			NoAction;
 		}
 		default_action = NoAction;
@@ -95,62 +89,20 @@ control MyIngress(inout headers hdr,
 	}
 
 	/* choisi un port OUT */
-	action balance(macAddr_t dstAddr) {
-
-		        /* Si le paquet vient du port IN, on le forward vers un des ports OUT
-        		   et on le filtre si il ne respecte pas la rate-limite imposee par l'utilisateur */
-	        if (standard_metadata.ingress_port == PORT_IN) {
-        	        /* forward vers un port OUT */
-	                /* permet que le port soit aleatoire et en meme temps qu'il reste le meme pour le quintuplet (@src, @dst, protocol, srcPort, dstPort) */
-	                standard_metadata.egress_spec = (hdr.ipv4.srcAddr + hdr.ipv4.dstAddr + hdr.tcp.srcPort + hdr.tcp.dstPort + hdr.ipv4.protocol) % NOMBRE_PORTS_OUT;
-        	        /* egress_spec vaut 1 ou 2, les ports OUT sont les ports 2 et 3 donc il faut ajouter +2 */
-
-                	/* l'indexation des ports commence a 1, d'ou le 1er +1. De plus le port 1 est le port IN, d'ou le 2eme +1 */
-	                standard_metadata.egress_spec = standard_metadata.egress_spec + 1 + 1;
-
-
-	                /* filtre en fonction de la rate-limite */
-        	        if (standard_metadata.egress_spec == 2) {
-                	        meter1_read.apply();
-	                }
-        	        else {
-                	        meter2_read.apply();
-	                }
-        	        meter_filter.apply();
-	        }
-        	/* Si le paquet vient d'un port OUT, on le forward vers le port IN */
-	        else {
-        	        standard_metadata.egress_spec = PORT_IN;
-	        }
-		hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-		hdr.ethernet.dstAddr = dstAddr;
 	}
 
 	apply {
 
-
-	/* Si le paquet vient du port IN, on le forward vers un des ports OUT
-	   et on le filtre si il ne respecte pas la rate-limite imposee par l'utilisateur */
-	if (standard_metadata.ingress_port == PORT_IN) {
-		/* forward vers un port OUT */
-		balance();
-
-		/* filtre en fonction de la rate-limite */
-	        if (standard_metadata.egress_spec == 2) {
-			meter1_read.apply();
+		switch (forward.apply().action_run) {
+			balance: {
+				post_balance.apply();
+				meter_filter.apply();
+			}
 		}
-		else {
-			meter2_read.apply();
-		}
-		meter_filter.apply();
+	
+	        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
+		nombre_paquets.count((bit<32>)0);
 	}
-	/* Si le paquet vient d'un port OUT, on le forward vers le port IN */
-	else {
-		standard_metadata.egress_spec = PORT_IN;
-	}	
-        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
-	nombre_paquets.count((bit<32>)0);
-    }
 }
 
 /*************************************************************************
