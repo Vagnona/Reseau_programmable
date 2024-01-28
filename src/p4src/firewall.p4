@@ -26,19 +26,18 @@ control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
 
-	register<bit<32>>(2048) nombre_paquets_dropped;
-	register<bit<32>>(2048) nombre_paquets_total;
+	counter(1, CounterType.packets_and_bytes) nombre_paquets_total;
+	counter(1, CounterType.packets_and_bytes) nombre_paquets_dropped;
 
-    action forward(bit<9> egress_port){
+    action forward(spec_t egress_port, macAddr_t dstAddr){
         standard_metadata.egress_spec = egress_port;
+	hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+	hdr.ethernet.dstAddr = dstAddr;
     }
 
 	/* augmente le compteur du nombre de paquets dropped ET drop le paquet courant */
 	action drop(bit<32> t) {
-		bit<32> temp;
-		nombre_paquets_dropped.read(temp, 32);
-		temp = temp + 1;
-		nombre_paquets_dropped.write(temp, 32);
+		nombre_paquets_dropped.count((bit<32>)0);
 		mark_to_drop(standard_metadata);
 	}
 
@@ -63,8 +62,10 @@ control MyIngress(inout headers hdr,
 			hdr.ipv4.srcAddr: exact;
 			hdr.ipv4.dstAddr: exact;
 			hdr.ipv4.protocol: exact;
-			hdr.tcp.srcPort: exact;
-			hdr.tcp.dstPort: exact;
+
+			/* somme des 2 car un seul est utilisé, l'autre est nul */
+			hdr.tcp.srcPort + hdr.udp.srcPort: exact;
+			hdr.tcp.dstPort + hdr.tcp.dstPort: exact;
 		}
 		actions = {
 			drop;
@@ -77,10 +78,7 @@ control MyIngress(inout headers hdr,
     apply {
 
 	/* augmente le nombre de paquets total */
-	bit<32> temp;
-	nombre_paquets_total.read(temp, 32);
-	temp = temp + 1;
-	nombre_paquets_total.write(temp, 32);
+	nombre_paquets_total.count((bit<32>)0);
 
 	/* forwarding + filtrage */
 	switch (repeater.apply().action_run) {

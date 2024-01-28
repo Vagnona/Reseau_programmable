@@ -119,7 +119,8 @@ control MyIngress(inout headers hdr,
 	/* Si le paquet vient d'un port OUT, on le forward vers le port IN */
 	else {
 		standard_metadata.egress_spec = PORT_IN;
-	}
+	}	
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 }
 
