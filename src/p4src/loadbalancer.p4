@@ -6,7 +6,7 @@
 #include "include/parsers.p4"
 
 const bit<8> PORT_IN = 1;
-const bit<8> NOMBRE_OUT = 2;
+const bit<8> NOMBRE_PORTS_OUT = 2;
 
 /*************************************************************************
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
@@ -40,7 +40,7 @@ control MyIngress(inout headers hdr,
 	        	meter1.read(meta.meter_tag);
 		}
 		else {
-			meter2.read(mete.meter_tag);
+			meter2.read(meta.meter_tag);
 		}
 	}
 
@@ -83,23 +83,31 @@ control MyIngress(inout headers hdr,
         	size = 16;
 	}
 
+	/* choisi un port OUT */
 	action balance() {
-		standard_metadata.egress_spec = (hdr.ipv4.srcAddr + hdr.ipv4.dstAddr + hdr.tcp.srcPort + hdr.tcp.dstPort + hdr.ipv4.protocol) % NOMBRE_OUT + 1;
-		if (standard_metadata.egress_spec == PORT_IN) {
-			standard_metadata.egress_spec = standard_metadata.egress_spec + 1;
-		}
+		/* permet que le port soit aleatoire et en meme temps qu'il reste le meme pour le quintuplet (@src, @dst, protocol, srcPort, dstPort) */
+		standard_metadata.egress_spec = (hdr.ipv4.srcAddr + hdr.ipv4.dstAddr + hdr.tcp.srcPort + hdr.tcp.dstPort + hdr.ipv4.protocol) % NOMBRE_PORTS_OUT;
+		/* egress_spec vaut 1 ou 2, les ports OUT sont les ports 2 et 3 donc il faut ajouter +2 */
+		
+		/* l'indexation des ports commence a 1, d'ou le 1er +1. De plus le port 1 est le port IN, d'ou le 2eme +1 */
+		standard_metadata.egress_spec = standard_metadata.egress_spec + 1 + 1;
 	}
 
 	apply {
+		/* augmente le compteur du nombre de paquets total */
                 bit<32> temp;
                 nombre_paquets_dropped.read(temp, 32);
                 temp = temp + 1;
                 nombre_paquets_dropped.write(temp, 32);
 
 
+	/* Si le paquet vient du port IN, on le forward vers un des ports OUT
+	   et on le filtre si il ne respecte pas la rate-limite imposee par l'utilisateur */
 	if (standard_metadata.ingress_port == PORT_IN) {
+		/* forward vers un port OUT */
 		balance();
 
+		/* filtre en fonction de la rate-limite */
 	        if (standard_metadata.egress_spec == 2) {
 			meter1_read.apply();
 		}
@@ -108,6 +116,7 @@ control MyIngress(inout headers hdr,
 		}
 		meter_filter.apply();
 	}
+	/* Si le paquet vient d'un port OUT, on le forward vers le port IN */
 	else {
 		standard_metadata.egress_spec = PORT_IN;
 	}

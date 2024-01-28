@@ -33,6 +33,7 @@ control MyIngress(inout headers hdr,
         standard_metadata.egress_spec = egress_port;
     }
 
+	/* augmente le compteur du nombre de paquets dropped ET drop le paquet courant */
 	action drop(bit<32> t) {
 		bit<32> temp;
 		nombre_paquets_dropped.read(temp, 32);
@@ -41,6 +42,7 @@ control MyIngress(inout headers hdr,
 		mark_to_drop(standard_metadata);
 	}
 
+	/* forward le paquet */
     table repeater {
         key = {
             standard_metadata.ingress_port: exact;
@@ -53,6 +55,9 @@ control MyIngress(inout headers hdr,
         default_action = NoAction;
     }
 
+	/* si le paquet correspond à un quintuplet (IP source, IP dst, protocole, port source, port destination)
+	 * alors on le drop
+	 */
 	table firewall {
 		key = {
 			hdr.ipv4.srcAddr: exact;
@@ -70,11 +75,14 @@ control MyIngress(inout headers hdr,
 	}
 
     apply {
+
+	/* augmente le nombre de paquets total */
 	bit<32> temp;
 	nombre_paquets_total.read(temp, 32);
 	temp = temp + 1;
 	nombre_paquets_total.write(temp, 32);
 
+	/* forwarding + filtrage */
 	switch (repeater.apply().action_run) {
 		forward: {
 			firewall.apply();
