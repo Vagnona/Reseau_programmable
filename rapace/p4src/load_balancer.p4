@@ -88,9 +88,6 @@ control MyIngress(inout headers hdr,
 		size = 4096;
 	}
 
-	/* choisi un port OUT */
-	}
-
 	apply {
 
 		switch (forward.apply().action_run) {
