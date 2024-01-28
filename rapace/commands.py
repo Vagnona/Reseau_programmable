@@ -106,12 +106,6 @@ def help():
 	log(ERROR, "Commande help non implémentée")
 
 
-def swap(node_id, equipment):
-	"""Remplace l'équipement tournant actuellement sur le switch node_id par equipment.
-	"""
-	log(ERROR, "Commande swap non implémentée")
-
-
 def set_weight(equipment1, equipment2, weight):
 	""" Change le poids d'un lien
 	"""
