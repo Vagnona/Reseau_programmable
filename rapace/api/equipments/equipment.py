@@ -2,7 +2,7 @@ from p4utils.utils.helper import load_topo
 from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 from p4utils.utils.compiler import * 
 
-from .type import HOST, ROUTER, EQUIPMENT_TYPE, FIREWALL
+from .type import HOST, ROUTER, EQUIPMENT_TYPE, FIREWALL, LOAD_BALANCER
 from ..constants import P4SRC, WORKING_DIR
 from ..utils import get_cksum
 
@@ -32,6 +32,8 @@ class Equipment():
 			return Router(name, network)
 		elif type == FIREWALL:
 			return Firewall(name, network)
+		elif type == LOAD_BALANCER:
+			return LoadBalancer(name, network)
 		else:
 			raise Exception(f"Unknown equipment type {type}")
 
@@ -53,6 +55,9 @@ class Equipment():
 			self.type = ROUTER
 		elif isinstance(self, Firewall):
 			self.type = FIREWALL
+		elif isinstance(self, LoadBalancer):
+			self.type = LOAD_BALANCER
+		
 
 		
 		self.network = network

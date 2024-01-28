@@ -2,10 +2,14 @@ switchs:
   - name: s1
     type: router
   - name: s2
-    type: firewall
+    type: router
+    in_port: s1
   - name: s3
+    type: router
+  - name: s4
     type: router
 
 links:
   - [s1, s2]
   - [s2, s3]
+  - [s2, s4]

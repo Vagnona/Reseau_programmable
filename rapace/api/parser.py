@@ -36,12 +36,22 @@ def check_topology_switchs(topology):
 	for switch in topology["switchs"]:
 		# On vérifie que chaque switch a deux champs "name" et "equipement"
 		is_in_dict("name", switch)
-		is_in_dict("type", switch)	
-	
+		is_in_dict("type", switch)
+
 		# On vérifie que chaque switch a un type d'equipement valide	# On vérifie que chaque switch a un type d'equipement valide
 		for switch in topology["switchs"]:
-			if switch["type"] != "firewall" and switch["type"] != "load_balancer" and switch["type"] != "router":
+			if switch["type"] != "firewall" and switch["type"] != "router":
 				raise Exception(f"Le switch {switch['name']} a un type d'equipement invalide")
+			
+		if switch["type"] == "load_balancer":
+			in_port = switch.get("in_port", None)
+			if in_port is None:
+				raise Exception(f"Le switch {switch['name']} doit avoir un champ \"in_port\"")
+
+			# On ajoute le champ "in_port" à la topologie
+			switch["in_port"] = in_port
+
+	
 	
 	# On vérifie que chaque switch a un nom unique
 	switchs_name = [s["name"] for s in topology["switchs"]]
