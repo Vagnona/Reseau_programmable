@@ -7,7 +7,7 @@
 *************************************************************************/
 
 #include "include/headers.p4"
-#include "include/parser.p4"
+#include "include/parsers.p4"
 
 /*************************************************************************
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
@@ -29,7 +29,7 @@ control MyIngress(inout headers hdr,
 	counter(1, CounterType.packets_and_bytes) nombre_paquets_total;
 	counter(1, CounterType.packets_and_bytes) nombre_paquets_dropped;
 
-    action forward(spec_t egress_port, macAddr_t dstAddr){
+    action forward(egressSpec_t egress_port, macAddr_t dstAddr){
         standard_metadata.egress_spec = egress_port;
 	hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
 	hdr.ethernet.dstAddr = dstAddr;
