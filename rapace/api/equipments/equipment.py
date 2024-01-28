@@ -151,6 +151,7 @@ class Equipment():
 		""" Renvoie le controlleur de l'équipement
 		"""
 		return SimpleSwitchThriftAPI(self.get_thrift_port())	
+	
 
 	#endregion
 

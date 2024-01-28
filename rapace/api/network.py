@@ -49,10 +49,11 @@ class Network:
 				)
 			)
 
-		# On crée un lien entre chaque équipement et son hôte
+		# On crée un lien entre chaque équipement et ses hôtes
 		for e in self.equipments:
 			if e.type != HOST:
-				self.links.append((e, self.get_host_of_equipment(e)))
+				for h in [h for h in self.equipments if h.name == f"{e.name}_host"]:
+					self.links.append((e, h))
 
 		# On crée la topologie logique
 		self.logic_graph = nx.Graph()
@@ -70,15 +71,7 @@ class Network:
 
 		# On upload les programmes P4 sur les switchs
 		self.push_p4_programs()
-
-		# On reset les états des contrôleurs
-		for e in self.get_switchs():
-			e.get_controller().reset_state()
-
-		# Pour chaque routeur
-		for r in self.get_equipments(ROUTER): #TODO -> mettre dans la fonction start de router.py ?
-			r.get_controller().table_set_default("ipv4_lpm", "drop", [])
-
+	
 		# On calcule la topologie logique
 		self.compute_logic_graph()
 
@@ -111,7 +104,8 @@ class Network:
 		# On crée les X switchs et leurs hosts
 		for e in self.get_switchs():
 			self.net.addP4Switch(e.name)
-			self.net.addLink(e.name, self.get_host_of_equipment(e).name)
+			for h in [h for h in self.equipments if h.name == f"{e.name}_host"]:
+				self.net.addLink(e.name, h.name)
 
 		# On crée une clique entre les switchs
 		for switch in self.net.switches():
@@ -179,13 +173,11 @@ class Network:
 		return None
 
 
-	def get_host_of_equipment(self, equipment):
-		""" Renvoie l'hôte d'un équipement
+	def get_hosts_of_equipment(self, equipment):
+		""" Renvoie les hôtes associés à un équipement
 		"""
-		for e in self.equipments:
-			if e.name == equipment.name + '_host':
-				return e
-		return None
+		hosts = self.get_topology().get_hosts_connected_to(equipment.name)
+		return [self.get_equipment_by_name(h) for h in hosts]
 
 
 	def get_links(self):
@@ -255,12 +247,25 @@ class Network:
 		"""
 		return [n for n in self.get_adjacent_nodes(node) if n.is_host()]
 	
-	#Retourne le chemin le plus court de sw_name à sw_dst #TODO ranger
-	def getshortest_path(self, sw_name, sw_dst):
-			paths = []
-			paths.append(tuple(self.shortest_paths[sw_name][sw_dst]))
-			return paths
 
+	def get_shortest_path(self, sw_name, sw_dst):
+		""" Renvoie le plus court chemin entre deux switchs
+		"""
+		paths = []
+		paths.append(tuple(self.shortest_paths[sw_name][sw_dst]))
+		return paths
+
+
+	def get_port_num_node_to_node(self, n1, n2):
+		""" Renvoie le numéro de port entre deux noeuds
+		"""
+		return self.get_topology().node_to_node_port_num(n1.name, n2.name)
+	
+
+	def get_mac_node_to_node(self, n1, n2):
+		""" Renvoie l'adresse MAC entre deux noeuds
+		"""
+		return self.get_topology().node_to_node_mac(n1.name, n2.name)
 
 	#endregion
 

@@ -18,3 +18,20 @@ class Host(Equipment):
 		""" Démarre l'hôte
 		"""
 		pass
+
+	#endregion
+
+	#region Getters/Setters
+
+	def get_ip(self):
+		""" Renvoie l'adresse IP de l'hôte
+		"""
+		return self.network.get_topology().get_host_ip(self.name)
+	
+
+	def get_mac(self):
+		""" Renvoie l'adresse MAC de l'hôte
+		"""
+		return self.network.get_topology().get_host_mac(self.name)
+	
+	#endregion

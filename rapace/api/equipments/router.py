@@ -51,42 +51,57 @@ class Router(Equipment):
 	def start(self):
 		""" Démarre le routeur
 		"""
-		#TODO: ranger !
-		node = self.name
-		self.topology = self.network.get_topology()
+		# On reset l'état du routeur
+		self.get_controller().reset_state()
 
-		for sw_dst in [h.name for h in self.network.get_equipments()]:
-			#if its ourselves we create direct connections
-			if node == sw_dst:
-					for host in self.topology.get_hosts_connected_to(node):
-							if host not in [h.name for h in self.network.get_equipments()]:
-									continue                    
+		# On ajoute les règles de routage
+		self.add_routing_rules()
 
-							sw_port = self.topology.node_to_node_port_num(node, host)
-							host_ip = self.topology.get_host_ip(host) + "/32"
-							host_mac = self.topology.get_host_mac(host)
 
-							#add rule
-							print("table_add at {}:".format(node))
-							self.get_controller().table_add("ipv4_lpm", "set_nhop", [str(host_ip)], [str(host_mac), str(sw_port)])
+	def add_routing_rules(self):
+		""" Ajoute les règles de routage
+		"""
+		
+		# On ajoute la règle de routage par défaut
+		self.get_controller().table_set_default("ipv4_lpm", "drop", [])
 
-			#check if there are directly connected hosts
-			else:
-					if self.topology.get_hosts_connected_to(sw_dst):
+		# Pour chaque switch
+		for sw_dst in self.network.get_switchs():
 
-							paths = self.network.getshortest_path(self.network.get_equipment_by_name(node),self.network.get_equipment_by_name(sw_dst))
+		
+			# Pour chaque hote connecté au switch
+			for h in self.network.get_hosts_of_equipment(sw_dst):
 
-							for host in self.topology.get_hosts_connected_to(sw_dst):
-									if host not in [h.name for h in self.network.get_equipments()]:
-											continue
+				# On détermine le prochain saut pour rejoindre le switch
+				if self == sw_dst:
+					next_hop = h
+				else:
+					next_hop = self.network.get_shortest_path(self,sw_dst)[0][1]
 
-									print("len(paths) == 1")
-									next_hop = paths[0][1].name
-									host_ip = self.topology.get_host_ip(host) + "/24"
-									sw_port = self.topology.node_to_node_port_num(node, next_hop)
-									dst_sw_mac = self.topology.node_to_node_mac(next_hop, node)
+				# On ajoute la règle de routage
+				self.add_routing_rule(next_hop,h)
 
-									#add rule
-									print("table_add at {}:".format(node))
-									self.get_controller().table_add("ipv4_lpm", "set_nhop", [str(host_ip)],
-																											[str(dst_sw_mac), str(sw_port)])
+	
+	def add_routing_rule(self, next_hop, h):
+		"""Ajoute une règle de routage pour rejoindre un hôte
+		"""
+
+		ip = h.get_ip()
+		port = self.network.get_port_num_node_to_node(self, next_hop)
+
+
+		# Si c'est une connexion directe
+		if next_hop == h:
+			# On rajoute le /32
+			ip += "/32"
+			mac = h.get_mac()
+		else:
+			# On rajoute le /24
+			ip += "/24"
+			mac = self.network.get_mac_node_to_node(self, next_hop)
+
+		# On ajoute la règle de routage
+		self.get_controller().table_add(
+			"ipv4_lpm", "set_nhop",
+			[str(ip)],[str(mac), str(port)]
+		)
