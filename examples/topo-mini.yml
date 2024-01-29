@@ -3,7 +3,6 @@ switchs:
     type: router
   - name: s2
     type: router
-    in_port: s1
   - name: s3
     type: router
   - name: s4

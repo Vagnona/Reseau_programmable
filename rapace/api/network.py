@@ -253,8 +253,6 @@ class Network:
 		# On réinstalle les règles de routage
 		for e in self.get_equipments(ROUTER):
 			e.start()
-
-
 	#endregion
 				
 	#region Méthodes d'instances privées
